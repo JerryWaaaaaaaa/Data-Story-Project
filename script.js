@@ -1,135 +1,93 @@
-let w = 1200;
-let h = 800;
+const w = 1200;
+const h = 800;
+const padding = 50;
 
-// for convenience
-let datafile = "data.json";
+// file name
+let datafile = "data/EdStats_Indicators_Report.csv";
+let processedData = [];
 
-// creating the svg that holds everything else
-// we do this outside the gotData function to
-// keeps things clean
-let viz = d3.select("#container")
-  .append('svg')
-    .attr("width", w)
-    .attr("height", h)
-    .style("background-color", "darkcyan")
-;
+d3.csv(datafile).then(gotData);
 
-// var step = 100;
+function gotData(data){
+    console.log("before filter", data);
+    // filter the data
+    data = getCountry(data, "United States");
+    console.log("after filter", data);
 
-var name = "A"
-var xScale;
-var yScale;
-var vizgroup;
+    // organize data
+    keys = Object.keys(data["0"]);
+    organizeData(data, keys);
+    console.log("after process", processedData);
 
-function gotData(incomingData){
+    // find max and min for x axis and y axis
+    let xDomain = d3.extent(processedData, function(datum){ return datum.year });
+    let yMax = d3.max(processedData, function(datum){ return datum.rate });
+    let yDomain = [70, yMax];
+    console.log(xDomain, yDomain);
 
-    // checking out our data
-    // console.log(incomingData);
-    // filter the data by its step
-    // console.log(getStep(incomingData, 0));
-    // filter the data by its name
-    // console.log(getName(incomingData, name));
-    // get the x and y [min, max]
-    let xDomain = d3.extent(incomingData, function(datapoint){ return datapoint.x; });
-    // console.log(xDomain);
-    let yDomain = d3.extent(incomingData, function(datapoint){ return datapoint.y; });
-    // console.log(yDomain);
+    // create xScale and yScale
+    xScale = d3.scaleLinear().domain(xDomain).range([padding, w - padding]);
+    yScale = d3.scaleLinear().domain(yDomain).range([h - padding, padding]);
 
-    // general padding of our visualization
-    let padding = 40;
-    // scale to map from min and max of our x values to the
-    // boundaries (minus padding) of our svg:
-    xScale = d3.scaleLinear().domain(xDomain).range([padding, w-padding]);
+    let viz = d3.select("#container").append("svg").attr("width", w).attr("height", h);
 
-
-    // create x-axis
-    // create axis for this scale
     let xAxis = d3.axisBottom(xScale);
-    // create a groyp to gold the axis elements
     let xAxisGroup = viz.append("g").attr("class", "xaxis");
-    // tell d3 to fill the group with the axis elements
     xAxisGroup.call(xAxis);
-    // position the axis at the bottom of the svg
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
-    // note how we flip the orientation (in the range) of our y scale
-    // to make sure that low y values are at the bottom of the graph
-    yScale = d3.scaleLinear().domain(yDomain).range([h-padding, padding]);
     let yAxis = d3.axisLeft(yScale);
     let yAxisGroup = viz.append("g").attr("class", "yaxis");
     yAxisGroup.call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
 
+    // drawData
+    let dataPoints = viz.selectAll(".dataPoints").data(processedData);
 
-    // Group that contains all my graphs!!!!!
-    vizgroup = viz.append("g").attr("class", "vizgroup");
+    let enteringGroups = dataPoints.enter();
 
-
-
-    // first we set which step to visualize
-    drawViz(incomingData);
-}
-
-
-// function that draws the data
-function drawViz(incomingData){
-    // console.log(incomingData);
-    let data = getName(incomingData, name);
-    console.log(data);
-
-    let datagroups = vizgroup.selectAll(".datagroup").data(data, function(d){
-        return d.step;
-    });
-
-    // for the incoming datas
-    let enteringDataGroup = datagroups.enter()
-      .append("g")
-      .attr("class", "datagroup")
+    enteringGroups.append("g")
+        .attr("transform", getPos)
+        .append("rect")
+        .attr("y", function(d){ return - (h - padding - yScale(d.rate)) })
+        .attr("width", 30)
+        .attr("height", function(d){ return h - padding - yScale(d.rate) })
+        .attr("fill", "black")
     ;
 
-    enteringDataGroup.append("circle")
-        .attr("r", 5)
-        .attr("fill", "white")
-    ;
-    
-    // enteringDataGroup.append("text").text(function(d, i){ return d.name}).attr("x", 10).attr("y", 5).attr("fill", "#ffffff");
-    enteringDataGroup.transition().attr("transform", function(d, i){
-      return "translate("+ xScale(d.x) + ", " + yScale(d.y) + ")"
-    });
+    function getPos(d){
+      console.log(d.year, d.rate);
+      let x = xScale(d.year);
+      let y = h - padding;
+      return "translate(" + x + "," + y + ")";
+    }
 
-    let exitingDataGroup = datagroups.exit().remove();
-
-    datagroups.transition().attr("transform", function(d, i){
-      return "translate("+ xScale(d.x) + ", " + yScale(d.y) + ")"
-    });
 }
 
-// function to retrieve only the data points
-// belonging to one step in time:
-function getStep(data, step){
-    return data.filter(function(datapoint){
-      if(datapoint.step == step){
-        return true;
-      }else{
-        return false;
-      }
-    });
+
+function organizeData(data, keys){
+    for (let i = 0; i < keys.length; i ++ ) {
+        k = keys[i];
+        if ( !( (k == " ") || (k == "") ) ) {
+            let country = data["0"][" "];
+            let year = k;
+            let value = parseFloat(data["0"][k]);
+            datum = {
+                "country": country,
+                "year": year,
+                "rate": value
+            }
+            processedData.push(datum);
+        }
+    }
 }
 
-function getName(data, name){
-    // console.log(data);
-    return data.filter(function(datapoint){
-      if(datapoint.name == name){
-        return true;
-      }else{
-        return false;
-      }
-    });
+function getCountry(data, country){
+    return data.filter(function(dataPoint){
+        if ( dataPoint[" "] == country ){
+          return true;
+        }
+        else {
+          return false;
+        }
+    })
 }
-
-function setButton(toName){
-    console.log(toName);
-    name = toName;
-    d3.json(datafile).then(drawViz);
-}
-
-d3.json(datafile).then(gotData);

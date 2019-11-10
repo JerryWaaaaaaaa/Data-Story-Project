@@ -22,10 +22,15 @@ Working hours can relate to many aspects of hour life, and it can also reflect m
 Even though there are already many correlations found under this topic, there are still some other aspects that I want to explore. Does the decrease of working hours bring more happiness to people? How is working hours related to [Human Development Index](https://ourworldindata.org/human-development-index)? Is it possible to show the working hours for only male or female, only skilled workers or unskilled workers?
 
 ## Progress
-- Subject Presentation
+- [Subject Presentation]()
+- [Work In Progress Presentation]()
 
 ## Data Resources
 - [UIS Statistics](http://data.uis.unesco.org/)
 - [The World Bank](http://datatopics.worldbank.org/education/indicators)
-- [The World Bank Indicators](http://datatopics.worldbank.org/education/indicators)
+- [PayScale College ROI Report](https://www.payscale.com/college-roi)
 - [OECD library](https://www.oecd-ilibrary.org/education/education-at-a-glance_19991487)
+
+## Other Reading Resources
+- [Liberal Arts](https://www.qdaily.com/articles/61757.html)
+- [Intensive Parenting](https://www.qdaily.com/articles/59812.html)

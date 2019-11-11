@@ -23,7 +23,7 @@ Even though there are already many correlations found under this topic, there ar
 
 ## Progress
 - [Subject Presentation]()
-- [Work In Progress Presentation]()
+- [Work In Progress Presentation](https://docs.google.com/presentation/d/1BBHRAaUVypzMHAJgxWnPxGbdQ2ACZH3EDMq94SzJ36c/edit?usp=sharing)
 
 ## Data Resources
 - [UIS Statistics](http://data.uis.unesco.org/)

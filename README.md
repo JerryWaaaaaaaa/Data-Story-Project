@@ -30,7 +30,12 @@ Even though there are already many correlations found under this topic, there ar
 - [The World Bank](http://datatopics.worldbank.org/education/indicators)
 - [PayScale College ROI Report](https://www.payscale.com/college-roi)
 - [OECD library](https://www.oecd-ilibrary.org/education/education-at-a-glance_19991487)
+- [Trends in College Pricing Resources](https://research.collegeboard.org/trends/college-pricing/resource-library)
 
 ## Other Reading Resources
-- [Liberal Arts](https://www.qdaily.com/articles/61757.html)
-- [Intensive Parenting](https://www.qdaily.com/articles/59812.html)
+- [Liberal Arts](https://www.qdaily.com/articles/61757.html)(This one is in Chinese.)
+- [Intensive Parenting](https://www.qdaily.com/articles/59812.html)(This one is in Chinese)
+- [History of College Education](https://college-education.procon.org/history-of-college-education/)
+- [Tuition Ranking](https://college-education.procon.org/highest-and-lowest-tuitions-of-ranked-us-colleges-universities/)
+- [Rise in College Tuition](https://www.americanactionforum.org/research/summary-accounting-rise-college-tuition/)
+- [College Pricing Highlights](https://research.collegeboard.org/trends/college-pricing/highlights)

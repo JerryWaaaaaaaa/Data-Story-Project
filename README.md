@@ -42,3 +42,4 @@ Even though there are already many correlations found under this topic, there ar
 - [Rise in College Tuition](https://www.americanactionforum.org/research/summary-accounting-rise-college-tuition/)
 - [College Pricing Highlights](https://research.collegeboard.org/trends/college-pricing/highlights)
 - [Graduate Income](https://www.wsj.com/articles/ny-fed-report-finds-rising-incomes-falling-unemployment-for-young-college-graduates-1454079989)
+- [Tuition Components](https://bigfuture.collegeboard.org/pay-for-college/college-costs/quick-guide-college-costs)

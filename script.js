@@ -67,15 +67,49 @@ function gotData(data){
     tfrb_line_sit.append("path").attr("d", tfrb_line).attr("fill", "none").attr("stroke", "#ff7543");
 
     let tfrb_data = viz.selectAll(".dataPoints").data(tfrb).enter();
-    tfrb_data.append("circle")
+    tfrb_data.append("g")
+        .attr("transform", function(d){
+          let x = xScale(d.year)+padding/2;
+          let y = yScale(d.amount);
+          return "translate(" + x + "," + y + ")";
+        })
         .attr("class", "TFRB")
-        .attr("cx", function(d){ return xScale(d.year)+padding/2 })
-        .attr("cy", function(d){ return yScale(d.amount) })
+        .attr("opacity", 1)
+    ;
+
+    tfrb_data.selectAll(".TFRB").append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
         .attr("r", 4)
         .attr("fill", "#ff7543")
+        .attr("opacity", 1)
+    ;
+
+    tfrb_data.selectAll(".TFRB").append("text")
+        .text(" ")
+        .attr("x", 0)
+        .attr("y", -5)
+        .attr("fill", "#ff7543")
+        .attr("opacity", 0)
     ;
 
     // add hover event
+    viz.selectAll(".TFRB")
+        .on("mouseover", function(d){
+            console.log(d);
+            let element = d3.select(this); // select the element
+            element.select("circle").transition().duration(500).attr("opacity", 0.5);
+            element.select("text").text( function(d){ return "$" + d.amount } );
+            element.select("text").transition().duration(500).attr("opacity", 1);
+        })
+        .on("mouseout", function(d){
+            console.log(d);
+            let element = d3.select(this); // select the element
+            element.select("circle").transition().duration(500).attr("opacity", 1);
+            element.select("text").transition().duration(500).attr("opacity", 0);
+            element.select("text").text("");
+        })
+    ;
 
     // ---------- net TFRB chart -----------
     let net_tfrb_line = d3.line()
@@ -87,12 +121,47 @@ function gotData(data){
 
     let net_tfrb_data = viz.selectAll(".dataPoints").data(net_tfrb).enter();
 
-    net_tfrb_data.append("circle")
-        .attr("class", "Net TFRB")
-        .attr("cx", function(d){ return xScale(d.year)+padding/2 })
-        .attr("cy", function(d){ return yScale(d.amount) })
+    net_tfrb_data.append("g")
+        .attr("transform", function(d){
+          let x = xScale(d.year)+padding/2;
+          let y = yScale(d.amount);
+          return "translate(" + x + "," + y + ")";
+        })
+        .attr("class", "NetTFRB")
+    ;
+
+    net_tfrb_data.selectAll(".NetTFRB").append("circle")
+        .attr("cx", 0)
+        .attr("cy", 0)
         .attr("r", 4)
         .attr("fill", "#ffc31e")
+        .attr("opacity", 1)
+    ;
+
+    net_tfrb_data.selectAll(".NetTFRB").append("text")
+        .text("")
+        .attr("x", 0)
+        .attr("y", -5)
+        .attr("fill", "#ffc31e")
+        .attr("opacity", 0)
+    ;
+
+    // add hover event
+    viz.selectAll(".NetTFRB")
+        .on("mouseover", function(d){
+            console.log(d);
+            let element = d3.select(this); // select the element
+            element.select("circle").transition().duration(500).attr("opacity", 0.5);
+            element.select("text").text( function(d){ return "$" + d.amount } );
+            element.select("text").transition().duration(500).attr("opacity", 1);
+        })
+        .on("mouseout", function(d){
+            console.log(d);
+            let element = d3.select(this); // select the element
+            element.select("circle").transition().duration(500).attr("opacity", 1);
+            element.select("text").transition().duration(500).attr("opacity", 0);
+            element.select("text").text("");
+        })
     ;
 
 }

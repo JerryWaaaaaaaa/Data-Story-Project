@@ -8,22 +8,24 @@ img{
 }
 
 p{
-  font-family: 'Open Sans', sans-serif;
-  font-size: 16px;
+  font-family: 'Martel', serif;
+  font-size: 18px;
+  line-height: 180%;
 }
 
 q{
-  font-family: 'DM Serif Text', serif;
-  font-size: 20px;
+  font-family: 'Martel', serif;
+  font-size: 32px;
+  color: #909090;
 }
 
 h1{
-  font-family: 'DM Serif Text', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 42px;
 }
 
 h2{
-  font-family: 'DM Serif Text', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 32px;
 }
 
@@ -33,17 +35,14 @@ h3{
 }
 
 #content{
-  width:50%;
-  margin:auto;
+  width: 30%;
+  position: relative;
+  left: 20%;
 }
 
 .svg_demo{
   border: solid black 1px;
-  width: 100%;
-}
-
-#TFRB_amount{
-  width: 100%;
+  width: 150%;
 }
 
 #TFRB_amount svg{

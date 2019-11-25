@@ -34,7 +34,7 @@ h1{
 
 h2{
   font-family: 'DM Serif Display', serif;
-  font-size: 32px;
+  font-size: 40px;
 }
 
 h3{
@@ -46,7 +46,7 @@ h3{
   width: 30%;
   position: relative;
   top:40vh;
-  left: 20%;
+  left: 24%;
 }
 
 .svg_demo{

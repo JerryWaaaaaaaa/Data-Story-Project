@@ -13,9 +13,13 @@ p{
   line-height: 180%;
 }
 
+.quotes{
+  width: 150%;
+}
+
 q{
   font-family: 'Martel', serif;
-  font-size: 32px;
+  font-size: 24px;
   color: #909090;
 }
 

@@ -1,6 +1,7 @@
-const w = 1000;
-const h = 400;
-const padding = 50;
+let w;
+let h;
+let heightRatio = 0.6;
+let padding = 50;
 
 // file name
 let datafile = "data/TFRB-private.csv";
@@ -30,6 +31,8 @@ function gotData(data){
     console.log("NET TFRB", net_tfrb);
     console.log("Grands", grands);
 
+    let viz = d3.select("#TFRB_amount").append("svg");
+    adjustVizHeight();
 
     // find max and min for x axis and y axis
     let allYears = tfrb.map(function(datum){return datum.year});
@@ -47,7 +50,6 @@ function gotData(data){
     ;
     let yScale = d3.scaleLinear().domain(yDomain).range([h - padding, padding]);
 
-    let viz = d3.select("#container").append("svg").attr("width", w).attr("height", h);
     // draw axis
     let xAxis = d3.axisBottom(xScale);
     let xAxisGroup = viz.append("g").attr("class", "xaxis");
@@ -158,6 +160,20 @@ function gotData(data){
         })
     ;
 
+    // function to adjust viz height dynamically
+    // in order to keep the heightRatio at any given
+    // width of the browser window
+    function adjustVizHeight(){
+      viz.style("height", function(){
+        w = parseInt(viz.style("width"), 10);
+        h = w * heightRatio;
+        return h;
+      })
+    }
+    function resized(){
+      adjustVizHeight()
+    }
+    window.addEventListener("resize", resized);
 
 }
 

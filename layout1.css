@@ -13,6 +13,12 @@ p{
   line-height: 180%;
 }
 
+strong{
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  line-height: 180%;
+}
+
 .quotes{
   width: 150%;
 }
@@ -38,8 +44,30 @@ h2{
 }
 
 h3{
-  font-family: 'DM Serif Text', serif;
+  font-family: 'DM Serif Display', serif;
   font-size: 26px;
+}
+
+#menu_bar{
+  width:30%;
+  position: fixed;
+  bottom: 30vh;
+  left: 72%;
+}
+
+.menu_item{
+  display: block;
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+}
+
+a:link{
+  text-decoration: none;
+  color: #000000;
+}
+
+a:hover{
+  color: #909090;
 }
 
 #content{

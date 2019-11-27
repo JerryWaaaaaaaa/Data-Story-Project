@@ -1,0 +1,113 @@
+body{
+  margin:0;
+}
+
+img{
+  width:400px;
+  display: block;
+}
+
+p{
+  font-family: 'Martel', serif;
+  font-size: 16px;
+  line-height: 200%;
+  color: #303030;
+}
+
+strong{
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  line-height: 180%;
+}
+
+.quotes{
+  width: 150%;
+}
+
+q{
+  font-family: 'Martel', serif;
+  font-size: 24px;
+  color: #909090;
+}
+
+#headline{
+  width: 150%;
+}
+
+h1{
+  font-family: 'DM Serif Display', serif;
+  font-size: 72px;
+}
+
+h2{
+  font-family: 'DM Serif Display', serif;
+  font-size: 40px;
+}
+
+h3{
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px;
+}
+
+
+
+#menu_bar{
+  width:30%;
+  position: fixed;
+  bottom: 10vh;
+  left: 82%;
+}
+
+.menu_item{
+  display: block;
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+}
+
+a:link{
+  text-decoration: none;
+  color: #000000;
+}
+
+a:hover{
+  color: #909090;
+}
+
+a:visited{
+  color: #000000;
+}
+
+#content{
+  width: 28%;
+  position: relative;
+  top:40vh;
+  left: 20%;
+  z-index: 1;
+}
+
+.svg_demo{
+  border: solid black 1px;
+  width: 100%;
+}
+
+#TFRB_amount svg{
+  width: 100%;
+}
+
+.sections{
+  margin-top: 50vh;
+}
+
+#viz{
+  width: 40%;
+  height: 40%;
+  position: fixed;
+  top: 25vh;
+  left: 52%;
+  background-color: #f4f4f4;
+}
+
+#svg{
+  width: 100%;
+  z-index: 0;
+}

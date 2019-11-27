@@ -5,17 +5,28 @@
     <title>College Tuition</title>
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text|DM+Serif+Display&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Martel:300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="layout2.css">
     <!-- include the d3 library -->
     <script src="https://d3js.org/d3.v5.min.js"></script>
 
 
   </head>
   <body>
+    <div id="menu_bar">
+        <a class="menu_item" href="#intro">Introduction</a>
+        <a class="menu_item" href="#tuition_budget">Tuition Budget</a>
+        <a class="menu_item" href="#tuition_rise">Tuition Rise</a>
+        <a class="menu_item" href="#theories">Theories on Tuition Rise</a>
+        <a class="menu_item" href="#job_market">Job Market</a>
+        <a class="menu_item" href="#wage">Wage</a>
+        <a class="menu_item">Conclusion</a>
+    </div>
+
     <div id="content">
-        <div class="headline"><h1>College Education</h1></div>
+        <div id="headline"><h1>College Education</h1></div>
 
         <div class="sections" id="intro">
+            <h2>Introduction</h2>
             <p>Let's start the conversation with this.</p>
             <img src="images/mismatch.png">
             <p>
@@ -30,39 +41,53 @@
               some data to figure out if college education has ever been "a channel for upward movement of different social classes".
             </p>
             <p>
-              The following research are mainly focusing on two college types: <strong>public 4-year out-of-state</strong>
-              and <strong>private 4-year</strong> (Students enrolled in these two types are usually charged the most).
+              The following research are mainly focusing on these enrollment types: <strong>public 2-year</strong>, <strong>public 4-year</strong>,
+               and <strong>private 4-year</strong>.
             </P>
         </div>
 
-        <div class="sections" id="tuition_components">
-            <h2>College Tuition Components</h2>
-                <img src="images/bill.jpg">
-                <p>
-                  Seriously though, we are paying more than just "tuition". College usually charges the sum of “tuition and fees” and “room and board” (TFRB). It’s also called the “sticker price”. Another term “Net TFRB” stands for the TFRB subtracting the grants and scholarships, it’s also called “net price”. The money we have to pay is the net price, not the sticker price. In addition, there are also other kinds of expenses, such as book fees, personal expenses, and transportation, but they are not counted into your tuition.
-                </p>
-                <p>
-                  This is what you are paying for college in 2019.
-                </p>
-                <div class="svg_demo"><p>(TFRB composition)</p></div>
+        <div class="sections" id="tuition_budget">
+            <h2>Tuition Budget</h2>
+            <img src="images/bill.jpg">
+            <p>
+              Seriously though, we are paying more than just "tuition". The "sticker price" of our college education
+              is the sum of our “tuition and fees” and “room and board” (TFRB). "Tuition and fees" is charged for all students,
+              while "room and board" is only charged for those living on campus.
+            </p>
+            <p>
+              In addition, there are also other kinds of expenses, such as books and supplies, transportation, and personal expenses.
+              They might not be counted into your tuition, but surely they sould be considered when making a budget.
+            </p>
+            <p id="tuition_budget_trigger">
+              This is the average budget for college education in 2019.
+            </p>
+            <p>➡️</p>
         </div>
 
         <div class="sections" id="tuition_rise">
-            <h2>Growth in Price</h2>
+            <h2>Tuition Rise</h2>
                 <img src="images/tuition_increase.png">
-                <p>
-                  Well, 1500% might be a little crazy, but let's take a look at how much tuition has really risen in the past
-                  20 years, from 1999 to 2019. To make the data more understandable, the amount are all in 2019 dollar, which
-                  means inflation is considered.
+                <p id="TFRB_trigger">
+                  Well, 1500% might be a little crazy, but let's take a look at how much tuition has actualy risen in the past
+                  20 years, from 1999 to 2019. To make the data more accurate, the amounts are all in 2019 dollar, which
+                  means the inflation is already considered.
                 </p>
-                <div class="svg_demo" id="TFRB_amount"><p>(TFRB and Net TFRB amount chart)</p></div>
-                <div class="svg_demo"><p>(TFRB and Net TFRB growth-rate chart)</p></div>
+                <p>➡️</p>
+                <p>
+                  What if I tell you that is not what we pay? Yep, there are grants and scholarships.
+                  So, what we really pay is the TFRB subtracting the grants and scholarships, which is also
+                   called the “net price”, or the “net TFRB”.
+                </p>
+                <p id="net_TFRB_trigger">
+                  Let's see how that has changed through time compared to the TFRB.
+                </p>
+                <p>➡️</p>
         </div>
 
         <div class="sections" id="theories">
             <h2>Theories about Tuition Rise</h2>
                 <p>
-                  There are several theories on the causes of tuition rises. Here are some interesting ones.
+                  There are several theories on the causes of tuition rises. I find the following two really intriguing.
                 </p>
 
                 <h3>The Bennett Hypothesis</h3>
@@ -76,9 +101,10 @@
                       do not cause college price inflation, but there is little doubt that they help make it possible.
                     </q></div>
                     <p>
-                      So, how much has student loan changed in the past 20 years?
+                      So, how much has the student loan changed in the past 20 years?
                     </p>
-                    <div class="svg_demo"><p>(student loan amount change and TFRB change)</p></div>
+                    <!-- <div class="svg_demo"><p>(student loan amount change and TFRB change)</p></div> -->
+                    <p>➡️</p>
                     <p>
                       It seems like there is no such positive correlation between tuition rise and student loan. Yes, Bennet revised his
                        hypothesis in 2013 as follows:
@@ -88,6 +114,7 @@
                       … Federal student aid makes it easier for colleges to do what they’re going to do anyway, which is raise tuition.
                     </q></div>
                     <img src="images/bullshit.jpg">
+                    <br>
 
                 <h3>Baumol's Cost Disease</h3>
                     <p>
@@ -110,22 +137,26 @@
         <div class="sections" id="job_market">
             <h2>Job Market</h2>
             <p>
-              For college students, there are three scenarios after graduation: find a dream job, get underemployed
-               (which means you don't necessarily need a degree to do the job), or get unemployed. Let's see how college
-                graduates are doing in the job market.
+              For most college students, they will encounter three different scenarios after graduation:
+              getting a dream job, getting an underemployed job, or get unemployed.
             </p>
             <p>
-              Considering experience as a factor, let's see if there is a difference in new college graduates and
-               experienced college graduates too.
+              Considering experience is also a factor when lookign for a job, let's differenciate new college graduates from
+               experienced college graduates, and see how they are doing in the job market.
             </p>
 
             <h3>Unemployment</h3>
+            <p>
+              "Unemployment" occuers when workers who want to work are not able to find a job.
+            </p>
             <div class="svg_demo"><p>(unemployment chart)</p></div>
 
             <h3>Underemployment</h3>
             <div class="svg_demo"><p>(underemployment chart)</p></div>
+        </div>
 
-            <h3>Wages</h3>
+        <div class="sections" id="wage">
+            <h2>Wages</h2>
             <div class="svg_demo"><p>(wage chart)</p></div>
             <img src="images/capitalist.jpg">
         </div>
@@ -134,6 +165,10 @@
             <h2>Conclusion</h2>
             <p>To be written...</p>
         </div>
+    </div>
+
+    <div id="viz">
+       <!-- <img src="images/tuition_budget.jpg" id="svg"> -->
     </div>
 
     <script type="text/javascript" src="script.js"></script>

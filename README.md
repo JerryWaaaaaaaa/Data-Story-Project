@@ -43,3 +43,4 @@ Even though there are already many correlations found under this topic, there ar
 - [College Pricing Highlights](https://research.collegeboard.org/trends/college-pricing/highlights)
 - [Graduate Income](https://www.wsj.com/articles/ny-fed-report-finds-rising-incomes-falling-unemployment-for-young-college-graduates-1454079989)
 - [Tuition Components](https://bigfuture.collegeboard.org/pay-for-college/college-costs/quick-guide-college-costs)
+- [Student Loan](https://www.investopedia.com/student-loan-debt-2019-statistics-and-outlook-4772007)

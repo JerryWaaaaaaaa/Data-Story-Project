@@ -3,8 +3,11 @@ body{
 }
 
 img{
-  width:400px;
   display: block;
+}
+
+.meme{
+  width: 300px;
 }
 
 p{
@@ -21,7 +24,7 @@ strong{
 }
 
 .quotes{
-  width: 150%;
+  width: 130%;
 }
 
 q{

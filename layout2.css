@@ -107,10 +107,9 @@ a:visited{
   position: fixed;
   top: 25vh;
   left: 52%;
-  background-color: #f4f4f4;
 }
 
-#svg{
+svg{
   width: 100%;
   z-index: 0;
 }

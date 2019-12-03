@@ -1,17 +1,20 @@
+import currentBox from "./leonScroller.js";
+
 let w;
 let h;
 let heightRatio = 0.6;
 let padding = 50;
 
-// file name
-let datafile = "data/TFRB-private.csv";
+// tuition rise chart
+
+let tuiton_rise_file = "data/TFRB-private.csv";
 let tfrb = [];
 let net_tfrb = [];
 let grands = [];
 
-d3.csv(datafile).then(gotData);
+d3.csv(tuiton_rise_file).then(tuitionRiseChart);
 
-function gotData(data){
+function tuitionRiseChart(tuiton_rise_file){
     // console.log("before selection", data);
     tfrb = [];
     net_tfrb = [];
@@ -22,16 +25,16 @@ function gotData(data){
     // console.log("after filter", data);
 
     // organize data
-    years = Object.keys(data[0]);
-    organizeData(data[1], tfrb, years);
-    organizeData(data[3], net_tfrb, years);
-    organizeData(data[4], grands, years);
+    let years = Object.keys(tuiton_rise_file[0]);
+    organizeData(tuiton_rise_file[1], tfrb, years);
+    organizeData(tuiton_rise_file[3], net_tfrb, years);
+    organizeData(tuiton_rise_file[4], grands, years);
     console.log("Years", years);
     console.log("TFRB", tfrb);
     console.log("NET TFRB", net_tfrb);
     console.log("Grands", grands);
 
-    let viz = d3.select("#TFRB_amount").append("svg");
+    let viz = d3.select("#viz").append("svg");
     adjustVizHeight();
 
     // find max and min for x axis and y axis
@@ -109,8 +112,6 @@ function gotData(data){
         })
     ;
 
-
-
     // ---------- net TFRB chart -----------
     let net_tfrb_line = d3.line()
                      .x(function(d){ return xScale(d.year)+padding/2 })
@@ -177,17 +178,16 @@ function gotData(data){
 
 }
 
-
 function organizeData(sourceData, outputData, keys){
     for (let i = 0; i < keys.length; i ++ ) {
-        k = keys[i];
+        let k = keys[i];
         if ( !( (k == " ") || (k == "") ) ) {
             let year = k;
             let value = sourceData[year].replace("$","");
             value = value.replace(",","");
             value = parseInt(value)
             console.log(value);
-            datum = {
+            let datum = {
                 "year": year,
                 "amount": value
             }
@@ -195,3 +195,19 @@ function organizeData(sourceData, outputData, keys){
         }
     }
 }
+
+
+let previousSection;
+
+let content = d3.select("#content");
+console.log(content);
+
+d3.selectAll(".sections").on("scroll", function(){
+
+    console.log("hi!");
+
+    currentBox(function(box){
+      console.log(box.id);
+    })
+
+})

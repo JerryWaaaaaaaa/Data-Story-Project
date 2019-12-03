@@ -19,7 +19,7 @@
         <a class="menu_item" href="#theories">Theories</a>
         <a class="menu_item" href="#job_market">Job Market</a>
         <a class="menu_item" href="#wage">Wage</a>
-        <a class="menu_item">Conclusion</a>
+        <a class="menu_item" href="#conclusion">Conclusion</a>
     </div>
 
     <div id="content">
@@ -61,7 +61,7 @@
             <p id="tuition_budget_trigger">
               This is the average budget for college education in 2019.
             </p>
-            <p>➡️</p>
+            <p class="box" id="budget_chart">➡️</p>
         </div>
 
         <div class="sections" id="tuition_rise">
@@ -72,7 +72,7 @@
                   20 years, from 1999 to 2019. To make the data more accurate, the amounts are all in 2019 dollar, which
                   means the inflation is already considered.
                 </p>
-                <p>➡️</p>
+                <p class="box" id="rise_chart_01">➡️</p>
                 <p>
                   What if I tell you that is not what we pay? Yep, there are grants and scholarships.
                   So, what we really pay is the TFRB subtracting the grants and scholarships, which is also
@@ -81,7 +81,7 @@
                 <p id="net_TFRB_trigger">
                   Let’s see how that has changed through time compared to the TFRB.
                 </p>
-                <p>➡️</p>
+                <p class="box" id="rise_chart_02">➡️</p>
         </div>
 
         <div class="sections" id="theories">
@@ -104,7 +104,7 @@
                       So, how much has the student loan changed in the past 20 years?
                     </p>
                     <!-- <div class="svg_demo"><p>(student loan amount change and TFRB change)</p></div> -->
-                    <p>➡️</p>
+                    <p class="box" id="theory_chart_01">➡️</p>
                     <p>
                       It seems like there is no such positive correlation between tuition rise and student loan. Yes, Bennet revised his
                        hypothesis in 2013 as follows:
@@ -130,8 +130,7 @@
                     <p>
                       OK, let’s take a look at the salary of college professor.
                     </p>
-
-                    <div class="svg_demo"><p>(college professor salary)</p></div>
+                    <p class="box" id="theory_chart_02">➡️</p>
         </div>
 
         <div class="sections" id="job_market">
@@ -155,13 +154,13 @@
             <p>
               Let's see the unemployment rate.
             </p>
-            <div class="svg_demo"><p>(unemployment chart)</p></div>
+            <p class="box" id="job_chart_01">➡️</p>
 
             <h3>Underemployment</h3>
             <p>
               Let's see the underemployment rate.
             </p>
-            <div class="svg_demo"><p>(underemployment chart)</p></div>
+            <p class="box" id="job_chart_02">➡️</p>
         </div>
 
         <div class="sections" id="wage">
@@ -169,7 +168,7 @@
             <p>Now suppose you are lucky enough and get a job after graduation. What's next?</p>
             <p><del>Making the world a better place.</del> <ins>Salary</ins></p>
             <p></p>
-            <div class="svg_demo"><p>(wage chart)</p></div>
+            <p class="box" id="wage_chart">➡️</p>
             <img class="meme" src="images/capitalist.jpg">
         </div>
 
@@ -180,9 +179,9 @@
     </div>
 
     <div id="viz">
-       <img src="images/tuition_budget.jpg" id="svg">
+       <!-- <img src="images/tuition_budget.jpg" id="svg"> -->
     </div>
-
-    <script type="text/javascript" src="script.js"></script>
+    <script type="module" src="leonScroller.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

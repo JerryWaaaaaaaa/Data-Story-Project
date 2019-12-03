@@ -455,7 +455,7 @@ function theoryChart01(){
 // you might move this block into the part of your code
 // in which your data is loaded/available
 let previousSection;
-d3.select(".sections").on("scroll", function(){
+d3.select("#content").on("scroll", function(){
   // the currentBox function is imported on the
   // very fist line of this script
   currentBox(function(box){

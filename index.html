@@ -5,7 +5,7 @@
     <title>College Tuition</title>
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text|DM+Serif+Display&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Martel:300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="layout2.css">
+    <link rel="stylesheet" type="text/css" href="layout.css">
     <!-- include the d3 library -->
     <script src="https://d3js.org/d3.v5.min.js"></script>
 
@@ -21,183 +21,184 @@
         <a class="menu_item" href="#wage">Wage</a>
         <a class="menu_item" href="#conclusion">Conclusion</a>
     </div>
+  <div id="scrollingWrapper">
+      <div id="content">
+          <div id="headline"><h1>College Education</h1></div>
 
-    <div id="content">
-        <div id="headline"><h1>College Education</h1></div>
+          <!-- <div class="sections" id="intro"> -->
+            <h2 id="intro">Introduction</h2>
+            <p>Let’s start the conversation with this.</p>
+            <img class="meme" src="images/mismatch.png">
+            <p>
+              In both the East and the West, it is common to regard education as a tool to help find a good job.
+              People believe that education can change their destiny and become a channel for upward movement of
+              different social classes.
+            </p>
+            <p>
+              However, the turbulent job market and the rising tuition don’t say so.
+              As a college student, the mismatch of the invest (the college education) and the return (a good job)
+              makes me doubt if this common notion on education is even right. So I made some research and visualized
+              some data to figure out if college education has ever been “a channel for upward movement of different social classes”.
+            </p>
+            <p>
+              The following research are mainly focusing on these enrollment types: <strong>public 2-year</strong>, <strong>public 4-year</strong>,
+               and <strong>private 4-year</strong>.
+            </P>
+          <!-- </div> -->
 
-        <!-- <div class="sections" id="intro"> -->
-          <h2 id="intro">Introduction</h2>
-          <p>Let’s start the conversation with this.</p>
-          <img class="meme" src="images/mismatch.png">
-          <p>
-            In both the East and the West, it is common to regard education as a tool to help find a good job.
-            People believe that education can change their destiny and become a channel for upward movement of
-            different social classes.
-          </p>
-          <p>
-            However, the turbulent job market and the rising tuition don’t say so.
-            As a college student, the mismatch of the invest (the college education) and the return (a good job)
-            makes me doubt if this common notion on education is even right. So I made some research and visualized
-            some data to figure out if college education has ever been “a channel for upward movement of different social classes”.
-          </p>
-          <p>
-            The following research are mainly focusing on these enrollment types: <strong>public 2-year</strong>, <strong>public 4-year</strong>,
-             and <strong>private 4-year</strong>.
-          </P>
-        <!-- </div> -->
+          <!-- <div class="sections" id="tuition_budget"> -->
+            <h2 id="tuition_budget">Tuition Budget</h2>
+            <img class="meme" src="images/bill.jpg">
+            <p>
+              Seriously though, we are paying more than just “tuition”. The “sticker price” of our college education
+              is the sum of our “tuition and fees” and “room and board” (TFRB). “Tuition and fees” is charged for all students,
+              while “room and board” is only charged for those living on campus.
+            </p>
+            <p>
+              In addition, there are also other kinds of expenses, such as books and supplies, transportation, and personal expenses.
+              They might not be counted into your tuition, but surely they sould be considered when making a budget.
+            </p>
+            <p id="tuition_budget_trigger">
+              This is the average budget for college education in 2019.
+            </p>
+            <div class="box" id="budget_chart">
+            <p>➡️</p>
+            </div>
+          <!-- </div> -->
 
-        <!-- <div class="sections" id="tuition_budget"> -->
-          <h2 id="tuition_budget">Tuition Budget</h2>
-          <img class="meme" src="images/bill.jpg">
-          <p>
-            Seriously though, we are paying more than just “tuition”. The “sticker price” of our college education
-            is the sum of our “tuition and fees” and “room and board” (TFRB). “Tuition and fees” is charged for all students,
-            while “room and board” is only charged for those living on campus.
-          </p>
-          <p>
-            In addition, there are also other kinds of expenses, such as books and supplies, transportation, and personal expenses.
-            They might not be counted into your tuition, but surely they sould be considered when making a budget.
-          </p>
-          <p id="tuition_budget_trigger">
-            This is the average budget for college education in 2019.
-          </p>
-          <div class="box" id="budget_chart">
-          <p>➡️</p>
-          </div>
-        <!-- </div> -->
+          <!-- <div class="sections" id="tuition_rise"> -->
+            <h2 id="tuition_rise">Tuition Rise</h2>
+                <img class="meme" src="images/tuition_increase.png">
+                <p id="TFRB_trigger">
+                  Well, 1500% might be a little crazy, but let’s take a look at how much tuition has actualy risen in the past
+                  20 years, from 1999 to 2019. To make the data more accurate, the amounts are all in 2019 dollar, which
+                  means the inflation is already considered.
+                </p>
+                <div class="box" id="rise_chart_01">
+                <p>➡️</p>
+                </div>
+                <p>
+                  What if I tell you that is not what we pay? Yep, there are grants and scholarships.
+                  So, what we really pay is the TFRB subtracting the grants and scholarships, which is also
+                   called the “net price”, or the “net TFRB”.
+                </p>
+                <p>
+                  Let’s see how that has changed through time compared to the TFRB.
+                </p>
+                <div class="box" id="rise_chart_02">
+                <p>➡️</p>
+                </div>
+          <!-- </div> -->
 
-        <!-- <div class="sections" id="tuition_rise"> -->
-          <h2 id="tuition_rise">Tuition Rise</h2>
-              <img class="meme" src="images/tuition_increase.png">
-              <p id="TFRB_trigger">
-                Well, 1500% might be a little crazy, but let’s take a look at how much tuition has actualy risen in the past
-                20 years, from 1999 to 2019. To make the data more accurate, the amounts are all in 2019 dollar, which
-                means the inflation is already considered.
+          <!-- <div class="sections" id="theories"> -->
+            <h2 id="theories">Theories</h2>
+                <p>
+                  There are several theories on the causes of tuition rises. I find the following two really intriguing.
+                </p>
+
+                <h3>The Bennett Hypothesis</h3>
+                    <p>
+                      In 1987, then-Education Secretary Willian J. Bennett made an argument that federal loan is a main cause of the
+                      tuition rise. In his work <i>Our Greedy Colleges</i>, he said:
+                    </p>
+                    <div class="quotes"><q>
+                      If anything, increases in financial aid in recent years have enabled colleges and universities blithely to raise
+                      their tuitions, confident that Federal loan subsidies would help cushion the increase … Federal student aid policies
+                      do not cause college price inflation, but there is little doubt that they help make it possible.
+                    </q></div>
+                    <p>
+                      So, how much has the student loan changed in the past 20 years?
+                    </p>
+                    <!-- <div class="svg_demo"><p>(student loan amount change and TFRB change)</p></div> -->
+                    <div class="box" id="theory_chart_01">
+                    <p>➡️</p>
+                    </div>
+                    <p>
+                      It seems like there is no such positive correlation between tuition rise and student loan. Yes, Bennet revised his
+                       hypothesis in 2013 as follows:
+                    </p>
+                    <div class="quotes"><q>
+                      If the federal government gives money, tuition goes up. If the federal government doesn’t give money, it goes up
+                      … Federal student aid makes it easier for colleges to do what they’re going to do anyway, which is raise tuition.
+                    </q></div>
+                    <img class="meme" src="images/bullshit.jpg">
+                    <br>
+
+                <h3>Baumol's Cost Disease</h3>
+                    <p>
+                      This is a complicated one, it’s the rise of salaries in jobs that have experienced no or low increase of labor
+                      productivity, in response to rising salaries in other jobs that have experienced higher labor productivity growth.
+                      Simply it means, people doing jobs that can't be measured by labor productivity are paid more based on the years
+                      they have done the job.
+                    </p>
+                    <p>
+                      When it comes to education, it means college has to pay higher salaries year by year. It’s reasonable for the
+                      students to pay more tuition to cover the cost, as they are the direct beneficiary.
+                    </p>
+                    <p>
+                      OK, let’s take a look at the salary of college professor.
+                    </p>
+                    <div class="box" id="theory_chart_02">
+                    <p>➡️</p>
+                    </div>
+          <!-- </div> -->
+
+          <!-- <div class="sections" id="job_market"> -->
+              <h2 id="job_market">Job Market</h2>
+              <p>
+                Some college students will decide to go for a post-graduate education, while the others will enter the job market.
+                For those in the job market, they will encounter three different scenarios:
+                getting a dream job, getting underemployed, or get unemployed.
               </p>
-              <div class="box" id="rise_chart_01">
+              <p>
+                “Unemployment” occuers when workers who want to work are not able to find a job.
+                “Underemployment” means either the employee is overqualified for the position
+                or the employee is holding a part-time job while wanting a full-time one.
+              </p>
+              <p>To examine if college education has helped us find a better job, let's see the performance in four perspectives:
+                <strong>all workers</strong>, <strong>young workers</strong>, <strong>all college graduates</strong>,
+                <strong>young college graduates</strong>.
+              </p>
+
+              <h3>Unemployment</h3>
+              <p>
+                Let's see the unemployment rate.
+              </p>
+              <div class="box" id="job_chart_01">
               <p>➡️</p>
               </div>
+
+              <h3>Underemployment</h3>
               <p>
-                What if I tell you that is not what we pay? Yep, there are grants and scholarships.
-                So, what we really pay is the TFRB subtracting the grants and scholarships, which is also
-                 called the “net price”, or the “net TFRB”.
+                Let's see the underemployment rate.
               </p>
-              <p>
-                Let’s see how that has changed through time compared to the TFRB.
-              </p>
-              <div class="box" id="rise_chart_02">
+              <div class="box" id="job_chart_02">
               <p>➡️</p>
               </div>
-        <!-- </div> -->
+          <!-- </div> -->
 
-        <!-- <div class="sections" id="theories"> -->
-          <h2 id="theories">Theories</h2>
-              <p>
-                There are several theories on the causes of tuition rises. I find the following two really intriguing.
-              </p>
+          <!-- <div class="sections" id="wage"> -->
+              <h2 id="conclusion">Wages</h2>
+              <p>Now suppose you are lucky enough and get a job after graduation. What's next?</p>
+              <p><del>Making the world a better place.</del> <ins>Salary</ins></p>
+              <p></p>
+              <div class="box" id="wage_chart">
+              <p>➡️</p>
+              </div>
+              <img class="meme" src="images/capitalist.jpg">
+          <!-- </div> -->
 
-              <h3>The Bennett Hypothesis</h3>
-                  <p>
-                    In 1987, then-Education Secretary Willian J. Bennett made an argument that federal loan is a main cause of the
-                    tuition rise. In his work <i>Our Greedy Colleges</i>, he said:
-                  </p>
-                  <div class="quotes"><q>
-                    If anything, increases in financial aid in recent years have enabled colleges and universities blithely to raise
-                    their tuitions, confident that Federal loan subsidies would help cushion the increase … Federal student aid policies
-                    do not cause college price inflation, but there is little doubt that they help make it possible.
-                  </q></div>
-                  <p>
-                    So, how much has the student loan changed in the past 20 years?
-                  </p>
-                  <!-- <div class="svg_demo"><p>(student loan amount change and TFRB change)</p></div> -->
-                  <div class="box" id="theory_chart_01">
-                  <p>➡️</p>
-                  </div>
-                  <p>
-                    It seems like there is no such positive correlation between tuition rise and student loan. Yes, Bennet revised his
-                     hypothesis in 2013 as follows:
-                  </p>
-                  <div class="quotes"><q>
-                    If the federal government gives money, tuition goes up. If the federal government doesn’t give money, it goes up
-                    … Federal student aid makes it easier for colleges to do what they’re going to do anyway, which is raise tuition.
-                  </q></div>
-                  <img class="meme" src="images/bullshit.jpg">
-                  <br>
+          <!-- <div class="sections" id="conclusion"> -->
+              <h2 id="conclusion">Conclusion</h2>
+              <p>To be written...</p>
+          <!-- </div> -->
+      </div>
 
-              <h3>Baumol's Cost Disease</h3>
-                  <p>
-                    This is a complicated one, it’s the rise of salaries in jobs that have experienced no or low increase of labor
-                    productivity, in response to rising salaries in other jobs that have experienced higher labor productivity growth.
-                    Simply it means, people doing jobs that can't be measured by labor productivity are paid more based on the years
-                    they have done the job.
-                  </p>
-                  <p>
-                    When it comes to education, it means college has to pay higher salaries year by year. It’s reasonable for the
-                    students to pay more tuition to cover the cost, as they are the direct beneficiary.
-                  </p>
-                  <p>
-                    OK, let’s take a look at the salary of college professor.
-                  </p>
-                  <div class="box" id="theory_chart_02">
-                  <p>➡️</p>
-                  </div>
-        <!-- </div> -->
-
-        <!-- <div class="sections" id="job_market"> -->
-            <h2 id="job_market">Job Market</h2>
-            <p>
-              Some college students will decide to go for a post-graduate education, while the others will enter the job market.
-              For those in the job market, they will encounter three different scenarios:
-              getting a dream job, getting underemployed, or get unemployed.
-            </p>
-            <p>
-              “Unemployment” occuers when workers who want to work are not able to find a job.
-              “Underemployment” means either the employee is overqualified for the position
-              or the employee is holding a part-time job while wanting a full-time one.
-            </p>
-            <p>To examine if college education has helped us find a better job, let's see the performance in four perspectives:
-              <strong>all workers</strong>, <strong>young workers</strong>, <strong>all college graduates</strong>,
-              <strong>young college graduates</strong>.
-            </p>
-
-            <h3>Unemployment</h3>
-            <p>
-              Let's see the unemployment rate.
-            </p>
-            <div class="box" id="job_chart_01">
-            <p>➡️</p>
-            </div>
-
-            <h3>Underemployment</h3>
-            <p>
-              Let's see the underemployment rate.
-            </p>
-            <div class="box" id="job_chart_02">
-            <p>➡️</p>
-            </div>
-        <!-- </div> -->
-
-        <!-- <div class="sections" id="wage"> -->
-            <h2 id="conclusion">Wages</h2>
-            <p>Now suppose you are lucky enough and get a job after graduation. What's next?</p>
-            <p><del>Making the world a better place.</del> <ins>Salary</ins></p>
-            <p></p>
-            <div class="box" id="wage_chart">
-            <p>➡️</p>
-            </div>
-            <img class="meme" src="images/capitalist.jpg">
-        <!-- </div> -->
-
-        <!-- <div class="sections" id="conclusion"> -->
-            <h2 id="conclusion">Conclusion</h2>
-            <p>To be written...</p>
-        <!-- </div> -->
-    </div>
-
-    <div id="viz">
-       <!-- <img src="images/tuition_budget.jpg" id="svg"> -->
+      <div id="viz">
+         <!-- <img src="images/tuition_budget.jpg" id="svg"> -->
+      </div>
     </div>
     <script type="module" src="leonScroller.js"></script>
-    <script type="module" src="script2.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

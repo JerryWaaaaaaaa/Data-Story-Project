@@ -3,14 +3,18 @@ body{
 }
 
 img{
-  width:400px;
   display: block;
+}
+
+.meme{
+  width: 300px;
 }
 
 p{
   font-family: 'Martel', serif;
-  font-size: 18px;
-  line-height: 180%;
+  font-size: 16px;
+  line-height: 200%;
+  color: #303030;
 }
 
 strong{
@@ -20,7 +24,7 @@ strong{
 }
 
 .quotes{
-  width: 150%;
+  width: 130%;
 }
 
 q{
@@ -29,7 +33,7 @@ q{
   color: #909090;
 }
 
-.headline{
+#headline{
   width: 150%;
 }
 
@@ -41,6 +45,7 @@ h1{
 h2{
   font-family: 'DM Serif Display', serif;
   font-size: 40px;
+  margin-top: 50vh;
 }
 
 h3{
@@ -48,11 +53,13 @@ h3{
   font-size: 26px;
 }
 
+
+
 #menu_bar{
   width:30%;
   position: fixed;
-  bottom: 30vh;
-  left: 72%;
+  bottom: 10vh;
+  left: 82%;
 }
 
 .menu_item{
@@ -70,16 +77,26 @@ a:hover{
   color: #909090;
 }
 
+a:visited{
+  color: #000000;
+}
+
+#scrollingWrapper{
+  height:100vh;
+  z-index: 1;
+  overflow: scroll;
+}
 #content{
-  width: 30%;
+  width: 28%;
   position: relative;
-  top:40vh;
-  left: 24%;
+  padding-top: 40vh;
+  left: 20%;
+  z-index: 1;
 }
 
 .svg_demo{
   border: solid black 1px;
-  width: 150%;
+  width: 100%;
 }
 
 #TFRB_amount svg{
@@ -88,4 +105,17 @@ a:hover{
 
 .sections{
   margin-top: 50vh;
+}
+
+#viz{
+  width: 40%;
+  height: 40%;
+  position: fixed;
+  top: 25vh;
+  left: 52%;
+}
+
+svg{
+  width: 100%;
+  z-index: 0;
 }

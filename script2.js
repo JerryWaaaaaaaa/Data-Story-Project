@@ -15,6 +15,8 @@ let viz = d3.select("#visualization")
     .append("svg")
   .style("background-color", "lavender")
 ;
+let xAxisGroup = viz.append("g").attr("class", "xaxis");
+let yAxisGroup = viz.append("g").attr("class", "yaxis");
 // function to adjust viz height dynamically
 // in order to keep the heightRatio at any given
 // width of the browser window
@@ -26,6 +28,7 @@ adjustVizHeight();
 let data_source = " ";
 let xScale, yScale;
 
+// for TFRB and Grants
 let private_tfrb = [];
 let public_tfrb = [];
 let private_net_tfrb = [];
@@ -36,6 +39,10 @@ let years;
 
 d3.csv("data/TFRB-private.csv").then(processPrivateData);
 d3.csv("data/TFRB-public.csv").then(processPublicData);
+
+// for job market
+let unemployment = [];
+d3.csv("data/unemployed.csv").then(processUnemployedData);
 
 function processPrivateData(data){
     years = Object.keys(data[0]);
@@ -49,6 +56,41 @@ function processPublicData(data){
     organizeData(data[1], public_tfrb, years);
     organizeData(data[3], public_net_tfrb, years);
     organizeData(data[4], public_grants, years);
+}
+
+function processUnemployedData(data){
+    let youngSum = 0;
+    let allSum = 0;
+    let recentGradSum = 0;
+    let collegeGradSum = 0;
+    let count = 1
+    for (let i = 1; i < data.length; i ++ ){
+        let d = data[i];
+        let year = d["Date"].split("/")[0]
+        if (count < 12) {
+            youngSum += parseFloat(d["Young workers"])
+            allSum += parseFloat(d["All workers"])
+            recentGradSum += parseFloat(d["Recent graduates"])
+            collegeGradSum += parseFloat(d["College graduates"])
+            count += 1
+            if (count >= 12) {
+                let datum = {
+                    year: year,
+                    young: youngSum/12,
+                    all: allSum/12,
+                    recent: recentGradSum/12,
+                    college: collegeGradSum/12
+                }
+                unemployment.push(datum);
+                youngSum = 0
+                allSum = 0
+                recentGradSum = 0
+                collegeGradSum = 0
+                count = 1
+            }
+        }
+    }
+    console.log(unemployment);
 }
 
 function tuitionRiseChart01(){
@@ -71,11 +113,11 @@ function tuitionRiseChart01(){
 
     // draw axis
     let xAxis = d3.axisBottom(xScale);
-    let xAxisGroup = viz.append("g").attr("class", "xaxis");
+    let xAxisGroup = viz.select(".xaxis");
     xAxisGroup.call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
-    let yAxisGroup = viz.append("g").attr("class", "yaxis");
+    let yAxisGroup = viz.select(".yaxis");
     yAxisGroup.call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
 
@@ -199,11 +241,11 @@ function tuitionRiseChart02(){
 
     // draw axis
     let xAxis = d3.axisBottom(xScale);
-    let xAxisGroup = viz.append("g").attr("class", "xaxis");
+    let xAxisGroup = viz.select(".xaxis");
     xAxisGroup.call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
-    let yAxisGroup = viz.append("g").attr("class", "yaxis");
+    let yAxisGroup = viz.select(".yaxis");
     yAxisGroup.call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
 
@@ -213,7 +255,7 @@ function tuitionRiseChart02(){
                      .y(function(d){ return yScale(d.amount) })
     ;
     let private_tfrb_line_sit = viz.datum(private_net_tfrb);
-    private_tfrb_line_sit.append("path").attr("d", private_tfrb_line).attr("fill", "none").attr("stroke", "#ff7543");
+    private_tfrb_line_sit.append("path").attr("d", private_tfrb_line).attr("fill", "none").attr("stroke", "#ff7543").style("stroke-dasharray", ("6, 6"));
 
     let private_tfrb_data = viz.selectAll(".dataPoints").data(private_net_tfrb).enter().append("g")
         .attr("transform", function(d){
@@ -221,7 +263,7 @@ function tuitionRiseChart02(){
           let y = yScale(d.amount);
           return "translate(" + x + "," + y + ")";
         })
-        .attr("class", "privateTFRB")
+        .attr("class", "privateNetTFRB")
     ;
 
     private_tfrb_data.append("circle")
@@ -241,7 +283,7 @@ function tuitionRiseChart02(){
     ;
 
     // add hover event
-    viz.selectAll(".privateTFRB")
+    viz.selectAll(".privateNetTFRB")
         .on("mouseover", function(d){
             console.log(d);
             let element = d3.select(this); // select the element
@@ -262,7 +304,7 @@ function tuitionRiseChart02(){
                      .y(function(d){ return yScale(d.amount) })
     ;
     let public_tfrb_line_sit = viz.datum(public_net_tfrb);
-    public_tfrb_line_sit.append("path").attr("d", public_tfrb_line).attr("fill", "none").attr("stroke", "#ffc31e");
+    public_tfrb_line_sit.append("path").attr("d", public_tfrb_line).attr("fill", "none").attr("stroke", "#ffc31e").style("stroke-dasharray", ("6, 6"));
 
     let public_tfrb_data = viz.selectAll(".dataPoints").data(public_net_tfrb).enter().append("g")
         .attr("transform", function(d){
@@ -270,7 +312,7 @@ function tuitionRiseChart02(){
           let y = yScale(d.amount);
           return "translate(" + x + "," + y + ")";
         })
-        .attr("class", "publicTFRB")
+        .attr("class", "publicNetTFRB")
     ;
 
     public_tfrb_data.append("circle")
@@ -290,7 +332,7 @@ function tuitionRiseChart02(){
     ;
 
     // add hover event
-    viz.selectAll(".publicTFRB")
+    viz.selectAll(".publicNetTFRB")
         .on("mouseover", function(d){
             console.log(d);
             let element = d3.select(this); // select the element
@@ -344,11 +386,11 @@ function theoryChart01(){
 
     // draw axis
     let xAxis = d3.axisBottom(xScale);
-    let xAxisGroup = viz.append("g").attr("class", "xaxis");
+    let xAxisGroup = viz.select(".xaxis");
     xAxisGroup.call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
-    let yAxisGroup = viz.append("g").attr("class", "yaxis");
+    let yAxisGroup = viz.select(".yaxis");
     yAxisGroup.call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
 
@@ -358,7 +400,7 @@ function theoryChart01(){
                      .y(function(d){ return yScale(d.amount) })
     ;
     let private_tfrb_line_sit = viz.datum(private_grants);
-    private_tfrb_line_sit.append("path").attr("d", private_tfrb_line).attr("fill", "none").attr("stroke", "#ff7543").style("stroke-dasharray", ("6, 6"));
+    private_tfrb_line_sit.append("path").attr("d", private_tfrb_line).attr("fill", "none").attr("stroke", "#ff7543");
 
     let private_tfrb_data = viz.selectAll(".dataPoints").data(private_grants).enter().append("g")
         .attr("transform", function(d){
@@ -366,7 +408,7 @@ function theoryChart01(){
           let y = yScale(d.amount);
           return "translate(" + x + "," + y + ")";
         })
-        .attr("class", "privateTFRB")
+        .attr("class", "privateGrant")
     ;
 
     private_tfrb_data.append("circle")
@@ -386,7 +428,7 @@ function theoryChart01(){
     ;
 
     // add hover event
-    viz.selectAll(".privateTFRB")
+    viz.selectAll(".privateGrant")
         .on("mouseover", function(d){
             console.log(d);
             let element = d3.select(this); // select the element
@@ -407,7 +449,7 @@ function theoryChart01(){
                      .y(function(d){ return yScale(d.amount) })
     ;
     let public_tfrb_line_sit = viz.datum(public_grants);
-    public_tfrb_line_sit.append("path").attr("d", public_tfrb_line).attr("fill", "none").attr("stroke", "#ffc31e").style("stroke-dasharray", ("6, 6"));
+    public_tfrb_line_sit.append("path").attr("d", public_tfrb_line).attr("fill", "none").attr("stroke", "#ffc31e");
 
     let public_tfrb_data = viz.selectAll(".dataPoints").data(public_grants).enter().append("g")
         .attr("transform", function(d){
@@ -415,7 +457,7 @@ function theoryChart01(){
           let y = yScale(d.amount);
           return "translate(" + x + "," + y + ")";
         })
-        .attr("class", "publicTFRB")
+        .attr("class", "publicGrant")
     ;
 
     public_tfrb_data.append("circle")
@@ -435,7 +477,7 @@ function theoryChart01(){
     ;
 
     // add hover event
-    viz.selectAll(".publicTFRB")
+    viz.selectAll(".publicGrant")
         .on("mouseover", function(d){
             console.log(d);
             let element = d3.select(this); // select the element
@@ -451,11 +493,42 @@ function theoryChart01(){
     ;
 }
 
+function jobChart01(){
+    // find max and min for x axis and y axis
+    let allYears = unemployment.map(function(datum){return datum.year});
+
+    let xDomain = d3.extent(years, function(year){ return parseInt(year) });
+    let yMax = d3.max(unemployment, function(datum){ return datum.young });
+    let yMin = d3.min(unemployment, function(datum){ return datum.college });
+    let yDomain = [yMin, yMax];
+    console.log(xDomain, yDomain);
+
+    // update xScale and yScale
+    xScale = d3.scaleBand()
+        .domain(allYears)
+        .range([padding, w-padding])
+    ;
+    yScale = d3.scaleLinear().domain(yDomain).range([h - padding, padding]);
+
+    // draw axis
+    let xAxis = d3.axisBottom(xScale);
+    let xAxisGroup = viz.select(".xaxis");
+    xAxisGroup.call(xAxis);
+    xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
+    let yAxis = d3.axisLeft(yScale);
+    let yAxisGroup = viz.select(".yaxis");
+    yAxisGroup.call(yAxis);
+    yAxisGroup.attr("transform", "translate("+padding+",0)");
+
+
+
+}
+
 // scrolling event listener
 // you might move this block into the part of your code
 // in which your data is loaded/available
 let previousSection;
-d3.select("#content").on("scroll", function(){
+d3.select("#textboxes").on("scroll", function(){
   // the currentBox function is imported on the
   // very fist line of this script
   currentBox(function(box){
@@ -482,13 +555,15 @@ d3.select("#content").on("scroll", function(){
       // draw rise chart 02
       theoryChart01();
     }
+    if(box.id=="job_chart_01" && box.id!=previousSection){
+      console.log("changing viz");
+      // trigger a new transition
+      previousSection = box.id;
+      // draw rise chart 02
+      jobChart01();
+    }
   })
 })
-
-
-
-
-
 
 
 // function to adjust viz height dynamically
@@ -511,3 +586,4 @@ window.addEventListener("resize", resized);
 // 1. Add transition between charts
 // 2. Comment to the chart
 // 3. replace dots with dollar svg
+// 4. show years on xaxis every other year

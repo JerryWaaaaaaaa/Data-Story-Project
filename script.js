@@ -9,7 +9,7 @@ import currentBox from "./leonScroller.js";
 // that are defined at the bottom)
 let w, h;
 let heightRatio = 0.6;
-let padding = 50;
+let padding = 60;
 
 let viz = d3.select("#viz")
     .append("svg")
@@ -17,6 +17,12 @@ let viz = d3.select("#viz")
 ;
 let xAxisGroup = viz.append("g").attr("class", "xaxis");
 let yAxisGroup = viz.append("g").attr("class", "yaxis");
+// xAxisGroup.selectAll("line").remove();
+// yAxisGroup.selectAll("line").remove();
+viz.append("g").attr("class", "tuition_rise_chart public_chart ");
+viz.append("g").attr("class", "tuition_rise_chart private_chart ");
+viz.selectAll(".tuition_rise_chart").append("path").attr("class", "paths path01").attr("opacity", 0).attr("fill", "none").attr("stroke", "none");
+viz.selectAll(".tuition_rise_chart").append("path").attr("class", "paths path02").attr("opacity", 0).attr("fill", "none").attr("stroke", "none").style("stroke-dasharray", ("6, 6"));
 
 // function to adjust viz height dynamically
 // in order to keep the heightRatio at any given
@@ -28,36 +34,71 @@ adjustVizHeight();
 // global use virables
 let xScale, yScale;
 
-// for TFRB and Grants
-let private_tfrb = [];
-let public_tfrb = [];
-let private_net_tfrb = [];
-let public_net_tfrb = [];
-let private_grants = [];
-let public_grants = [];
-let years;
 
-d3.csv("data/TFRB-private.csv").then(processPrivateData);
-d3.csv("data/TFRB-public.csv").then(processPublicData);
+// for tuition rise
+let privateRise = [];
+let publicRise = [];
+let privateColor = "#ed553b";
+let publicColor = "#f6d55c";
+
+d3.csv("data/TFRB-private.csv").then(processPrivateRiseData);
+d3.csv("data/TFRB-public.csv").then(processPublicRiseData);
+function processPrivateRiseData(data){
+    // console.log(data);
+    let target = data[1];
+    let keys = Object.keys(data[1]);
+    // console.log(keys);
+    keys.forEach(function(key){
+        let year = keys;
+        let tfrb_value = data[1][key];
+        let net_tfrb_value = data[3][key];
+        let grants = data[4][key];
+        // console.log(key, tfrb_value, net_tfrb_value, grants);
+        if (key != "") {
+            let datum = {
+               year: key,
+               tfrb: tfrb_value,
+               netTfrb: net_tfrb_value,
+               grants: grants
+            }
+            privateRise.push(datum);
+        }
+    });
+    console.log("Private", privateRise);
+}
+function processPublicRiseData(data){
+    // console.log(data);
+    let target = data[1];
+    let keys = Object.keys(data[1]);
+    // console.log(keys);
+    keys.forEach(function(key){
+        let year = keys;
+        let tfrb_value = data[1][key];
+        let net_tfrb_value = data[3][key];
+        let grants = data[4][key];
+        // console.log(key, tfrb_value, net_tfrb_value, grants);
+        if (key != "") {
+            let datum = {
+               year: key,
+               tfrb: tfrb_value,
+               netTfrb: net_tfrb_value,
+               grants: grants
+            }
+            publicRise.push(datum);
+        }
+    });
+    console.log("Public", publicRise);
+}
 
 // for job market
 let unemployment = [];
 d3.csv("data/unemployed.csv").then(processUnemployedData);
-
-function processPrivateData(data){
-    years = Object.keys(data[0]);
-    organizeData(data[1], private_tfrb, years);
-    organizeData(data[3], private_net_tfrb, years);
-    organizeData(data[4], private_grants, years);
+function formatDollar(target){
+    target = target.replace("$","");
+    target = target.replace(",","");
+    target = parseInt(target);
+    return target;
 }
-
-function processPublicData(data){
-    years = Object.keys(data[0]);
-    organizeData(data[1], public_tfrb, years);
-    organizeData(data[3], public_net_tfrb, years);
-    organizeData(data[4], public_grants, years);
-}
-
 function processUnemployedData(data){
     let youngSum = 0;
     let allSum = 0;
@@ -91,262 +132,370 @@ function processUnemployedData(data){
             }
         }
     }
-    console.log(unemployment);
+    console.log("Unemployment data", unemployment);
+}
+
+function setTuitionRiseHover(){
+    let hoverCard = viz.append("g")
+        .attr("id", "hoverInfo")
+        // .attr("transform", "translate(0,0)")
+        .attr("opacity", 0);
+
+    hoverCard.append("rect")
+        .attr("width", 120)
+        .attr("height", 86)
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("fill", "black")
+    ;
+
+    let textXPadding = 10;
+    let textYPadding = 24;
+
+    hoverCard.append("text")
+        .attr("id", "collegeType")
+        .text("Type")
+        .attr("x", textXPadding)
+        .attr("y", textYPadding)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
+
+    hoverCard.append("text")
+        .text("Year:")
+        .attr("x", textXPadding)
+        .attr("y", textYPadding * 2)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
+
+    hoverCard.append("text")
+        .text("no data")
+        .attr("id", "yearNumber")
+        .attr("x", textXPadding + 36)
+        .attr("y", textYPadding * 2)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
+
+    hoverCard.append("text")
+        .text("Amount:")
+        .attr("x", textXPadding)
+        .attr("y", textYPadding * 3)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
+
+    hoverCard.append("text")
+        .text("no data")
+        .attr("id", "yearAmount")
+        .attr("x", textXPadding + 54)
+        .attr("y", textYPadding * 3)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
 }
 
 function tuitionRiseChart01(){
+    // chane chart chart
+    document.getElementById("chart_title").innerHTML = "Tuition and Fee, Room and Board, from 1999 to 2019";
 
     // find max and min for x axis and y axis
-    let allYears = private_tfrb.map(function(datum){return datum.year});
+    let xDomain = privateRise.map(function(datum){ return datum.year });
 
-    let xDomain = d3.extent(years, function(year){ return parseInt(year) });
-    let yMax = d3.max(private_tfrb, function(datum){ return datum.amount });
-    let yMin = d3.min(public_grants, function(datum){ return datum.amount });
-    let yDomain = [yMin, yMax];
+    let yMax = d3.max(privateRise, function(datum){ return formatDollar(datum.tfrb) });
+    let yMin = d3.min(privateRise, function(datum){ return formatDollar(datum.netTfrb) });
+    let yDomain = [0, yMax];
     console.log(xDomain, yDomain);
 
     // create xScale and yScale
     xScale = d3.scaleBand()
-        .domain(allYears)
+        .domain(xDomain)
         .range([padding, w-padding])
     ;
     yScale = d3.scaleLinear().domain(yDomain).range([h - padding, padding]);
 
     // draw axis
     let xAxis = d3.axisBottom(xScale);
-    let xAxisGroup = viz.select(".xaxis");
+    xAxisGroup = viz.select(".xaxis");
     xAxisGroup.call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
-    let yAxisGroup = viz.select(".yaxis");
+    yAxisGroup = viz.select(".yaxis");
     yAxisGroup.call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
 
     // --------- Private TFRB chart ----------
-    let private_tfrb_line = d3.line()
-                     .x(function(d){ return xScale(d.year)+padding/2 })
-                     .y(function(d){ return yScale(d.amount) })
-    ;
-    let private_tfrb_line_sit = viz.datum(private_tfrb);
-    private_tfrb_line_sit.append("path").attr("class", "tuition_rise_chart").attr("d", private_tfrb_line).attr("fill", "none").attr("stroke", "#ff7543");
-    let private_tfrb_data = viz.selectAll(".dataPoints").data(private_tfrb).enter().append("g")
-        .attr("transform", function(d){
-          let x = xScale(d.year)+padding/2;
-          let y = yScale(d.amount);
-          return "translate(" + x + "," + y + ")";
-        })
-        .attr("class", "tuition_rise_chart privateTFRB")
-    ;
+    privateChart();
+    function privateChart(){
+        let chart = viz.select(".private_chart");
 
-    private_tfrb_data.append("circle")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", 4)
-        .attr("fill", "#ff7543")
-        .attr("opacity", 1)
-    ;
+        let line = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        ;
+        let line_sit = chart.datum(privateRise);
+        // line_sit.select("path").attr("d", line).attr("fill", "none").attr("stroke", publicColor);
+        line_sit.select(".path01").transition().attr("stroke", privateColor);
+        line_sit.select(".path01").transition().duration(500).attr("d", line).attr("opacity", 1);
 
-    private_tfrb_data.append("text")
-        .text( function(d){ return "$" + d.amount } )
-        .attr("x", -25)
-        .attr("y", -5)
-        .attr("fill", "#ff7543")
-        .attr("opacity", 0)
-    ;
+        let pointsGroup = chart.selectAll(".dataPoints").data(privateRise);
 
-    // add hover event
-    viz.selectAll(".privateTFRB")
-        .on("mouseover", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 8);
-            element.select("text").transition().duration(500).attr("opacity", 1);
-        })
-        .on("mouseout", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 4);
-            element.select("text").transition().duration(500).attr("opacity", 0);
-        })
-    ;
+        pointsGroup.enter().append("g")
+            .attr("class", "dataPoints")
+            .attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+            .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", 4)
+                .attr("fill", privateColor)
+                .attr("opacity", 1)
+                .attr("class", "privateTFRB")
+            ;
+        ;
 
-    // --------- Public TFRB chart ----------
-    let public_tfrb_line = d3.line()
-                     .x(function(d){ return xScale(d.year)+padding/2 })
-                     .y(function(d){ return yScale(d.amount) })
-    ;
-    let public_tfrb_line_sit = viz.datum(public_tfrb);
-    public_tfrb_line_sit.append("path").attr("class", "tuition_rise_chart").attr("d", public_tfrb_line).attr("fill", "none").attr("stroke", "#ffc31e");
+        pointsGroup.transition().duration(500).attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+        ;
+    }
+    publicChart();
+    function publicChart(){
+        let chart = viz.select(".public_chart");
 
-    let public_tfrb_data = viz.selectAll(".dataPoints").data(public_tfrb).enter().append("g")
-        .attr("transform", function(d){
-          let x = xScale(d.year)+padding/2;
-          let y = yScale(d.amount);
-          return "translate(" + x + "," + y + ")";
-        })
-        .attr("class", "tuition_rise_chart publicTFRB")
-    ;
+        let line = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        ;
+        let line_sit = chart.datum(publicRise);
+        line_sit.select(".path01").transition().attr("stroke", publicColor);
+        line_sit.select(".path01").transition().duration(500).attr("d", line).attr("opacity", 1);
 
-    public_tfrb_data.append("circle")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", 4)
-        .attr("fill", "#ffc31e")
-        .attr("opacity", 1)
-    ;
+        let pointsGroup = chart.selectAll(".dataPoints").data(publicRise);
 
-    public_tfrb_data.append("text")
-        .text( function(d){ return "$" + d.amount } )
-        .attr("x", -25)
-        .attr("y", -5)
-        .attr("fill", "#ffc31e")
-        .attr("opacity", 0)
-    ;
+        pointsGroup.enter().append("g")
+            .attr("class", "dataPoints")
+            .attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+            .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", 4)
+                .attr("fill", publicColor)
+                .attr("opacity", 1)
+                .attr("class", "privateTFRB")
+            ;
+        ;
 
-    // add hover event
-    viz.selectAll(".publicTFRB")
-        .on("mouseover", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 8);
-            element.select("text").transition().duration(500).attr("opacity", 1);
-        })
-        .on("mouseout", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 4);
-            element.select("text").transition().duration(500).attr("opacity", 0);
-        })
-    ;
+        pointsGroup.transition().duration(500).attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+        ;
+    }
 
+    // hovers
+    setTuitionRiseHover();
+    updateTuitionRiseHover("Public");
+    updateTuitionRiseHover("Private");
+    function updateTuitionRiseHover(type){
+        let className;
+        if (type == "Private") { className = ".privateTFRB" }
+        if (type == "Public") { className = ".publicTFRB" }
+        // add hover event
+        viz.selectAll(".tuition_rise_chart").selectAll(".dataPoints").selectAll(className)
+            .on("mouseover", function(d){
+                console.log(d);
+                let element = d3.select(this); // select the element
+                element.transition().duration(500).attr("r", 8);
+                d3.select("#hoverInfo").attr("transform", getPos(d));
+                d3.select("#hoverInfo").select("#collegeType").text(function(){ return "4-Year-" + type });
+                d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
+                d3.select("#hoverInfo").select("#yearAmount").text(function(){ return d.tfrb });
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8);
+            })
+            .on("mouseout", function(d){
+                // console.log(d);
+                let element = d3.select(this); // select the element
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
+                // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
+            })
+        ;
+
+        function getPos(d){
+            let x = xScale( d.year ) - 30;
+            let y = yScale( formatDollar(d.tfrb) ) + 10;
+            return "translate(" + x + "," + y + ")";
+        }
+    }
 }
 
 function tuitionRiseChart02(){
+    // chane chart chart
+    document.getElementById("chart_title").innerHTML = "Net TFRB, from 1999 to 2019";
 
     // find max and min for x axis and y axis
-    let allYears = private_tfrb.map(function(datum){return datum.year});
+    let xDomain = privateRise.map(function(datum){ return datum.year });
 
-    let xDomain = d3.extent(years, function(year){ return parseInt(year) });
-    let yMax = d3.max(private_tfrb, function(datum){ return datum.amount });
-    let yMin = d3.min(public_grants, function(datum){ return datum.amount });
-    let yDomain = [yMin, yMax];
+    let yMax = d3.max(privateRise, function(datum){ return formatDollar(datum.tfrb) });
+    let yMin = d3.min(privateRise, function(datum){ return formatDollar(datum.netTfrb) });
+    let yDomain = [0, yMax];
     console.log(xDomain, yDomain);
 
     // create xScale and yScale
     xScale = d3.scaleBand()
-        .domain(allYears)
+        .domain(xDomain)
         .range([padding, w-padding])
     ;
     yScale = d3.scaleLinear().domain(yDomain).range([h - padding, padding]);
 
     // draw axis
     let xAxis = d3.axisBottom(xScale);
-    let xAxisGroup = viz.select(".xaxis");
+    xAxisGroup = viz.select(".xaxis");
     xAxisGroup.call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
-    let yAxisGroup = viz.select(".yaxis");
+    yAxisGroup = viz.select(".yaxis");
     yAxisGroup.call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
 
     // --------- Private TFRB chart ----------
-    let private_tfrb_line = d3.line()
-                     .x(function(d){ return xScale(d.year)+padding/2 })
-                     .y(function(d){ return yScale(d.amount) })
-    ;
-    let private_tfrb_line_sit = viz.datum(private_net_tfrb);
-    private_tfrb_line_sit.append("path").attr("class", "tuition_rise_chart").attr("d", private_tfrb_line).attr("fill", "none").attr("stroke", "#ff7543").style("stroke-dasharray", ("6, 6"));
+    privateChart();
+    function privateChart(){
+        let chart = viz.select(".private_chart");
 
-    let private_tfrb_data = viz.selectAll(".dataPoints").data(private_net_tfrb).enter().append("g")
-        .attr("transform", function(d){
-          let x = xScale(d.year)+padding/2;
-          let y = yScale(d.amount);
-          return "translate(" + x + "," + y + ")";
-        })
-        .attr("class", "tuition_rise_chart privateNetTFRB")
-    ;
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(privateRise);
+        console.log("compare data", pointsGroup_compare);
+        pointsGroup_compare.enter().append("g").attr("class", "dataPoints_compare")
+            .attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+            .attr("opacity", 0)
+            .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", 3)
+                .attr("fill", privateColor)
+                .attr("opacity", 1)
+                .attr("class", "privateTFRB")
+            ;
+        pointsGroup_compare.exit().remove();
+        pointsGroup_compare.transition().attr("opacity", 0);
 
-    private_tfrb_data.append("circle")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", 4)
-        .attr("fill", "#ff7543")
-        .attr("opacity", 1)
-    ;
+        let line = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.netTfrb) ) })
+        ;
+        let line_sit = chart.datum(privateRise);
+        line_sit.select(".path01").transition().attr("stroke", privateColor);
+        line_sit.select(".path01").transition().duration(500).attr("d", line).attr("opacity", 1);
+        line_sit.select(".path02").transition().duration(500).attr("opacity", 0);
 
-    private_tfrb_data.append("text")
-        .text( function(d){ return "$" + d.amount } )
-        .attr("x", -25)
-        .attr("y", -5)
-        .attr("fill", "#ff7543")
-        .attr("opacity", 0)
-    ;
+        let pointsGroup = chart.selectAll(".dataPoints").data(privateRise);
+        // console.log("riseChart02", pointsGroup);
 
-    // add hover event
-    viz.selectAll(".privateNetTFRB")
-        .on("mouseover", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 8);
-            element.select("text").transition().duration(500).attr("opacity", 1);
-        })
-        .on("mouseout", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 4);
-            element.select("text").transition().duration(500).attr("opacity", 0);
-        })
-    ;
+        pointsGroup.transition().duration(500).attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.netTfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+        ;
 
-    // --------- Public TFRB chart ----------
-    let public_tfrb_line = d3.line()
-                     .x(function(d){ return xScale(d.year)+padding/2 })
-                     .y(function(d){ return yScale(d.amount) })
-    ;
-    let public_tfrb_line_sit = viz.datum(public_net_tfrb);
-    public_tfrb_line_sit.append("path").attr("class", "tuition_rise_chart").attr("d", public_tfrb_line).attr("fill", "none").attr("stroke", "#ffc31e").style("stroke-dasharray", ("6, 6"));
+    }
+    publicChart();
+    function publicChart(){
+        let chart = viz.select(".public_chart");
 
-    let public_tfrb_data = viz.selectAll(".dataPoints").data(public_net_tfrb).enter().append("g")
-        .attr("transform", function(d){
-          let x = xScale(d.year)+padding/2;
-          let y = yScale(d.amount);
-          return "translate(" + x + "," + y + ")";
-        })
-        .attr("class", "tuition_rise_chart publicNetTFRB")
-    ;
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(publicRise);
+        console.log("compare data", pointsGroup_compare);
+        pointsGroup_compare.enter().append("g").attr("class", "dataPoints_compare")
+            .attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+            .attr("opacity", 0)
+            .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", 3)
+                .attr("fill", publicColor)
+                .attr("opacity", 1)
+                .attr("class", "publicTFRB")
+            ;
+        pointsGroup_compare.exit().remove();
+        pointsGroup_compare.transition().attr("opacity", 0);
 
-    public_tfrb_data.append("circle")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", 4)
-        .attr("fill", "#ffc31e")
-        .attr("opacity", 1)
-    ;
+        let line = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.netTfrb) ) })
+        ;
+        let line_sit = chart.datum(publicRise);
+        line_sit.select(".path01").transition().attr("stroke", publicColor);
+        line_sit.select(".path01").transition().duration(500).attr("d", line).attr("opacity", 1);
+        line_sit.select(".path02").transition().duration(500).attr("opacity", 0);
 
-    public_tfrb_data.append("text")
-        .text( function(d){ return "$" + d.amount } )
-        .attr("x", -25)
-        .attr("y", -5)
-        .attr("fill", "#ffc31e")
-        .attr("opacity", 0)
-    ;
+        let pointsGroup = chart.selectAll(".dataPoints").data(publicRise);
+        // console.log("riseChart02", pointsGroup);
 
-    // add hover event
-    viz.selectAll(".publicNetTFRB")
-        .on("mouseover", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 8);
-            element.select("text").transition().duration(500).attr("opacity", 1);
-        })
-        .on("mouseout", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 4);
-            element.select("text").transition().duration(500).attr("opacity", 0);
-        })
-    ;
+        pointsGroup.transition().duration(500).attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.netTfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+        ;
 
+
+    }
+
+    // hovers
+    setTuitionRiseHover();
+    updateTuitionRiseHover("Public");
+    updateTuitionRiseHover("Private");
+    function updateTuitionRiseHover(type){
+        let className;
+        if (type == "Private") { className = ".privateTFRB" }
+        if (type == "Public") { className = ".publicTFRB" }
+        // add hover event
+        viz.selectAll(".tuition_rise_chart").selectAll(".dataPoints").selectAll(className)
+            .on("mouseover", function(d){
+                console.log(d);
+                let element = d3.select(this); // select the element
+                element.transition().duration(500).attr("r", 8);
+                d3.select("#hoverInfo").attr("transform", getPos(d));
+                d3.select("#hoverInfo").select("#collegeType").text(function(){ return "4-Year-" + type });
+                d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
+                d3.select("#hoverInfo").select("#yearAmount").text(function(){ return d.netTfrb });
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8);
+            })
+            .on("mouseout", function(d){
+                // console.log(d);
+                let element = d3.select(this); // select the element
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
+                // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
+            })
+        ;
+
+        function getPos(d){
+            let x = xScale( d.year ) - 30;
+            let y = yScale( formatDollar(d.netTfrb) ) + 10;
+            return "translate(" + x + "," + y + ")";
+        }
+    }
 }
 
 function organizeData(sourceData, outputData, keys){
@@ -357,7 +506,7 @@ function organizeData(sourceData, outputData, keys){
             let value = sourceData[year].replace("$","");
             value = value.replace(",","");
             value = parseInt(value)
-            console.log(value);
+            // console.log(value);
             let datum = {
                 "year": year,
                 "amount": value
@@ -368,132 +517,139 @@ function organizeData(sourceData, outputData, keys){
 }
 
 function theoryChart01(){
-    // find max and min for x axis and y axis
-    let allYears = private_tfrb.map(function(datum){return datum.year});
+    // chane chart chart
+    document.getElementById("chart_title").innerHTML = "Student Grants, from 1999 to 2019";
 
-    let xDomain = d3.extent(years, function(year){ return parseInt(year) });
-    let yMax = d3.max(private_tfrb, function(datum){ return datum.amount });
-    let yMin = d3.min(public_grants, function(datum){ return datum.amount });
-    let yDomain = [yMin, yMax];
-    console.log(xDomain, yDomain);
+    // find max and min for x axis and y axis
+    let xDomain = privateRise.map(function(datum){ return datum.year });
+
+    let yMax = d3.max(privateRise, function(datum){ return formatDollar(datum.tfrb) });
+    let yMin = d3.min(privateRise, function(datum){ return formatDollar(datum.netTfrb) });
+    let yDomain = [0, yMax];
+    // console.log(xDomain, yDomain);
 
     // create xScale and yScale
     xScale = d3.scaleBand()
-        .domain(allYears)
+        .domain(xDomain)
         .range([padding, w-padding])
     ;
     yScale = d3.scaleLinear().domain(yDomain).range([h - padding, padding]);
 
     // draw axis
     let xAxis = d3.axisBottom(xScale);
-    let xAxisGroup = viz.select(".xaxis");
+    xAxisGroup = viz.select(".xaxis");
     xAxisGroup.call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
-    let yAxisGroup = viz.select(".yaxis");
+    yAxisGroup = viz.select(".yaxis");
     yAxisGroup.call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
 
-    // --------- Fade out the old chart ----------
-    d3.selectAll(".tuition_rise_chart").transition().duration(500).attr("opacity", 0);
-
     // --------- Private TFRB chart ----------
-    let private_tfrb_line = d3.line()
-                     .x(function(d){ return xScale(d.year)+padding/2 })
-                     .y(function(d){ return yScale(d.amount) })
-    ;
-    let private_tfrb_line_sit = viz.datum(private_grants);
-    private_tfrb_line_sit.append("path").attr("class", "tuitin_theory_chart").attr("d", private_tfrb_line).attr("fill", "none").attr("stroke", "#ff7543");
+    privateChart();
+    function privateChart(){
+        let chart = viz.select(".private_chart");
 
-    let private_tfrb_data = viz.selectAll(".dataPoints").data(private_grants).enter().append("g")
-        .attr("transform", function(d){
-          let x = xScale(d.year)+padding/2;
-          let y = yScale(d.amount);
-          return "translate(" + x + "," + y + ")";
-        })
-        .attr("class", "tuitin_theory_chart privateGrant")
-    ;
+        let line = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.grants) ) })
+        ;
+        let line2 = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        ;
 
-    private_tfrb_data.append("circle")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", 4)
-        .attr("fill", "#ff7543")
-        .attr("opacity", 1)
-    ;
+        let line_sit = chart.datum(privateRise);
+        line_sit.select(".path01").transition().attr("stroke", privateColor);
+        line_sit.select(".path01").transition().duration(500).attr("d", line).attr("opacity", 1);
+        line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", privateColor);
 
-    private_tfrb_data.append("text")
-        .text( function(d){ return "$" + d.amount } )
-        .attr("x", -25)
-        .attr("y", -5)
-        .attr("fill", "#ff7543")
-        .attr("opacity", 0)
-    ;
 
-    // add hover event
-    viz.selectAll(".privateGrant")
-        .on("mouseover", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 8);
-            element.select("text").transition().duration(500).attr("opacity", 1);
-        })
-        .on("mouseout", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("r", 4);
-            element.select("text").transition().duration(500).attr("opacity", 0);
-        })
-    ;
+        let pointsGroup = chart.selectAll(".dataPoints").data(privateRise);
 
-    // --------- Public TFRB chart ----------
-    let public_tfrb_line = d3.line()
-                     .x(function(d){ return xScale(d.year)+padding/2 })
-                     .y(function(d){ return yScale(d.amount) })
-    ;
-    let public_tfrb_line_sit = viz.datum(public_grants);
-    public_tfrb_line_sit.append("path").attr("class", "tuitin_theory_chart").attr("d", public_tfrb_line).attr("fill", "none").attr("stroke", "#ffc31e");
 
-    let public_tfrb_data = viz.selectAll(".dataPoints").data(public_grants).enter().append("g")
-        .attr("transform", function(d){
-          let x = xScale(d.year)+padding/2;
-          let y = yScale(d.amount);
-          return "translate(" + x + "," + y + ")";
-        })
-        .attr("class", "tuition_theory_chart publicGrant")
-    ;
+        pointsGroup.transition().duration(500).attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.grants) );
+              return "translate(" + x + "," + y + ")";
+            })
+        ;
 
-    public_tfrb_data.append("circle")
-        .attr("cx", 0)
-        .attr("cy", 0)
-        .attr("r", 4)
-        .attr("fill", "#ffc31e")
-        .attr("opacity", 1)
-    ;
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(privateRise);
+        console.log("compare", pointsGroup_compare);
 
-    public_tfrb_data.append("text")
-        .text( function(d){ return "$" + d.amount } )
-        .attr("x", -25)
-        .attr("y", -5)
-        .attr("fill", "#ffc31e")
-        .attr("opacity", 0)
-    ;
+        pointsGroup_compare.transition().duration(500).attr("opacity", 1);
 
-    // add hover event
-    viz.selectAll(".publicGrant")
-        .on("mouseover", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("opacity", 1);
-            element.select("text").transition().duration(500).attr("opacity", 1);
-        })
-        .on("mouseout", function(d){
-            console.log(d);
-            let element = d3.select(this); // select the element
-            element.select("circle").transition().duration(500).attr("opacity", 0.5);
-            element.select("text").transition().duration(500).attr("opacity", 0);
-        })
-    ;
+    }
+    publicChart();
+    function publicChart(){
+        let chart = viz.select(".public_chart");
+
+        let line = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.grants) ) })
+        ;
+        let line2 = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding/2 })
+                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        ;
+
+        let line_sit = chart.datum(publicRise);
+        line_sit.select(".path01").transition().attr("stroke", publicColor);
+        line_sit.select(".path01").transition().duration(500).attr("d", line).attr("opacity", 1);
+        line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", publicColor);
+
+        let pointsGroup = chart.selectAll(".dataPoints").data(publicRise);
+
+        pointsGroup.transition().duration(500).attr("transform", function(d){
+              let x = xScale( d.year ) + padding/2;
+              let y = yScale( formatDollar(d.grants) );
+              return "translate(" + x + "," + y + ")";
+            })
+        ;
+
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(publicRise);
+        console.log("compare", pointsGroup_compare);
+
+        pointsGroup_compare.transition().duration(500).attr("opacity", 1);
+
+    }
+
+    // hovers
+    setTuitionRiseHover();
+    updateTuitionRiseHover("Public");
+    updateTuitionRiseHover("Private");
+    function updateTuitionRiseHover(type){
+        let className;
+        if (type == "Private") { className = ".privateTFRB" }
+        if (type == "Public") { className = ".publicTFRB" }
+        // add hover event
+        viz.selectAll(".tuition_rise_chart").selectAll(".dataPoints").selectAll(className)
+            .on("mouseover", function(d){
+                console.log(d);
+                let element = d3.select(this); // select the element
+                element.transition().duration(500).attr("r", 8);
+                d3.select("#hoverInfo").attr("transform", getPos(d));
+                d3.select("#hoverInfo").select("#collegeType").text(function(){ return "4-Year-" + type });
+                d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
+                d3.select("#hoverInfo").select("#yearAmount").text(function(){ return d.grants });
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8);
+            })
+            .on("mouseout", function(d){
+                // console.log(d);
+                let element = d3.select(this); // select the element
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
+                // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
+            })
+        ;
+
+        function getPos(d){
+            let x = xScale( d.year ) - 30;
+            let y = yScale( formatDollar(d.grants) ) + 10;
+            return "translate(" + x + "," + y + ")";
+        }
+    }
 }
 
 function jobChart01(){
@@ -533,11 +689,12 @@ function jobChart01(){
 let previousSection;
 d3.select("#scrollingWrapper").on("scroll", function(){
 // window.addEventListener("scroll", function(){
-  console.log("scroll");
+  // console.log("scroll");
   // the currentBox function is imported on the
   // very fist line of this script
+  // tuitionRiseChart01();
   currentBox(function(box){
-    console.log("BOX", box);
+    // console.log("BOX", box);
 
     if(box.id=="rise_chart_01" && box.id!=previousSection){
       console.log("changing viz");
@@ -560,13 +717,13 @@ d3.select("#scrollingWrapper").on("scroll", function(){
       // draw rise chart 02
       theoryChart01();
     }
-    if(box.id=="job_chart_01" && box.id!=previousSection){
-      console.log("changing viz");
-      // trigger a new transition
-      previousSection = box.id;
-      // draw rise chart 02
-      jobChart01();
-    }
+    // if(box.id=="job_chart_01" && box.id!=previousSection){
+    //   console.log("changing viz");
+    //   // trigger a new transition
+    //   previousSection = box.id;
+    //   // draw rise chart 02
+    //   jobChart01();
+    // }
   })
 })
 

@@ -10,6 +10,16 @@ img{
   width: 300px;
 }
 
+.xaxis{
+  font-family: 'Martel', serif;
+  font-size: 12px;
+}
+
+.yaxis{
+  font-family: 'Martel', serif;
+  font-size: 12px;
+}
+
 p{
   font-family: 'Martel', serif;
   font-size: 16px;

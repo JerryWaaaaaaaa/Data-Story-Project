@@ -15,23 +15,33 @@ let viz = d3.select("#viz")
     .append("svg")
     // .style("background-color", "grey")
 ;
-let xAxisGroup = viz.append("g").attr("class", "xaxis");
-let yAxisGroup = viz.append("g").attr("class", "yaxis");
-viz.append("g").attr("class", "tuition_rise_chart public_chart").attr("opacity", 1);
-viz.append("g").attr("class", "tuition_rise_chart private_chart").attr("opacity", 1);
+// global use virables
+let xScale, yScale;
+
+let xAxisGroup = viz.append("g").attr("class", "xaxis").attr("opacity", 0);
+let yAxisGroup = viz.append("g").attr("class", "yaxis").attr("opacity", 0);
+
+viz.append("g").attr("class", "budget_chart chart0").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "budget_chart chart1").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "budget_chart chart2").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "budget_chart chart3").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "budget_chart chart4").attr("opacity", 0).attr("visibility", "hidden");
+
+viz.append("g").attr("class", "tuition_rise_chart public_chart").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "tuition_rise_chart private_chart").attr("opacity", 0).attr("visibility", "hidden");
 viz.selectAll(".tuition_rise_chart").append("path").attr("class", "paths path01").attr("opacity", 0).attr("fill", "none").attr("stroke", "none");
 viz.selectAll(".tuition_rise_chart").append("path").attr("class", "paths path02").attr("opacity", 0).attr("fill", "none").attr("stroke", "none").style("stroke-dasharray", ("6, 6"));
 
-viz.append("g").attr("class", "employment_chart All_chart").attr("opacity", 0);
-viz.append("g").attr("class", "employment_chart Young_chart").attr("opacity", 0);
-viz.append("g").attr("class", "employment_chart Recent_College_chart").attr("opacity", 0);
-viz.append("g").attr("class", "employment_chart College_chart").attr("opacity", 0);
+viz.append("g").attr("class", "employment_chart All_chart").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "employment_chart Young_chart").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "employment_chart Recent_College_chart").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "employment_chart College_chart").attr("opacity", 0).attr("visibility", "hidden");
 viz.selectAll(".employment_chart").append("path").attr("class", "paths path01").attr("opacity", 0).attr("fill", "none").attr("stroke", "none");
 
-viz.append("g").attr("class", "wage_chart college25_chart").attr("opacity", 0);
-viz.append("g").attr("class", "wage_chart college75_chart").attr("opacity", 0);
-viz.append("g").attr("class", "wage_chart collegeMid_chart").attr("opacity", 0);
-viz.append("g").attr("class", "wage_chart highSchoolMid_chart").attr("opacity", 0);
+viz.append("g").attr("class", "wage_chart college25_chart").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "wage_chart college75_chart").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "wage_chart collegeMid_chart").attr("opacity", 0).attr("visibility", "hidden");
+viz.append("g").attr("class", "wage_chart highSchoolMid_chart").attr("opacity", 0).attr("visibility", "hidden");
 viz.selectAll(".wage_chart").append("path").attr("class", "paths path01").attr("opacity", 0).attr("fill", "none").attr("stroke", "none");
 
 
@@ -42,9 +52,49 @@ viz.selectAll(".wage_chart").append("path").attr("class", "paths path01").attr("
 adjustVizHeight();
 
 
-// global use virables
-let xScale, yScale;
 
+
+// ----------- for budget
+let budget = [[],[],[],[],[]];
+let budgetTypes = [];
+d3.csv("data/tuition_budget.csv").then(processBudgetData);
+function processBudgetData(data){
+    let target = data[0];
+    budgetTypes = Object.keys(target);
+    budgetTypes.splice( budgetTypes.indexOf(""), 1 );
+    budgetTypes.splice( budgetTypes.indexOf("Total"), 1 );
+    console.log("Keys", budgetTypes);
+    // console.log("raw budget", target);
+    let bookNum = ["Books and Supplies", Math.floor(formatDollar(target["Books and Supplies"])/100), 2 ];
+    let tuitionNum = ["Tuition and Fees", Math.floor(formatDollar(target["Tuition and Fees"])/500), 0];
+    let roomNum = ["Room and Board", Math.floor(formatDollar(target["Room and Board"])/500), 1 ];
+    let transportationNum = ["Transportation", Math.floor(formatDollar(target["Transportation"])/100), 3 ];
+    let otherNum = ["Other Expenses", Math.floor(formatDollar(target["Other Expenses"])/100), 4 ];
+    // console.log("Tuition and Fees", tuitionNum);
+    // console.log("Books and Supplies", bookNum);
+    // console.log("Room and Board", roomNum);
+    // console.log("Transportation", transportationNum);
+    // console.log("Other Expenses", otherNum);
+
+    createDatum(bookNum);
+    createDatum(tuitionNum);
+    createDatum(roomNum);
+    createDatum(transportationNum);
+    createDatum(otherNum);
+
+    function createDatum(comb){
+        let key = comb[0];
+        let num = comb[1];
+        let index = comb[2];
+        for (let i = 0; i < num; i++) {
+            let datum = {
+                type: key
+            }
+            budget[index].push(datum);
+        }
+    }
+    console.log("budget", budget);
+}
 
 // ----------- for tuition rise
 let privateRise = [];
@@ -281,21 +331,137 @@ function setTuitionRiseHover(){
 }
 
 function budgetChart(){
+    // fade in & out effect
+    viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 0);
+    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".budget_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
+
+
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "College Budget, 2019";
+
+    let xDomain = budgetTypes;
+    console.log(budget, budgetTypes, xDomain);
+    xScale = d3.scaleBand()
+        .domain(xDomain)
+        .range([padding, w-padding])
+    ;
+    let xAxis = d3.axisBottom(xScale);
+    xAxisGroup = viz.select(".xaxis");
+    xAxisGroup.transition().duration(1000).call(xAxis);
+    xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
+    xAxisGroup.selectAll("line").remove();
+    yAxisGroup.selectAll("line").remove();
+
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 1);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 0);
+
+    budget.forEach(drawChart);
+    function drawChart(incomingData, i){
+        // console.log(i);
+        let billSvg;
+        if ( i == 0 || i == 1) { billSvg = bill500 }
+        else { billSvg = bill100 }
+        let toSelect = ".chart" + i;
+        let chart = viz.select(toSelect);
+        // console.log(incomingData);
+
+        incomingData.forEach(d=>{
+            // console.log( "Translate Scale", xScale( d.type ) );
+            d.x = xScale( d.type );
+            d.y = h/2
+        })
+
+        simulationEnded();
+
+        let simulation = d3.forceSimulation(incomingData)
+            .force("forceX", d3.forceX( function(d){
+                return xScale( d.type ) + 60;
+            } ) )
+            .force("forceY", d3.forceY( h/2 ) )
+            // .forceCenter([ function(d){ return xScale( d.type ) }, h/2 ])
+            .force("collide", d3.forceCollide(4) )
+            .on("tick", simulationRan)
+            .tick(299)
+            .on("end", simulationEnded)
+        ;
+
+        function simulationEnded(){
+
+            chart.selectAll(".dataPoints").data(incomingData).enter()
+            .append("g").attr("class", "dataPoints").append("g").attr("class", "svgSize").html(billSvg);
+
+            chart.selectAll(".dataPoints").attr("transform", function(d){ return "translate(" + d.x + "," + d.y + ")" } );
+
+            function randomTransform(){
+                return "scale(0.04) rotate(" +
+                Math.floor(Math.random()*180) +
+                ")";
+            }
+            chart.selectAll(".svgSize").attr("transform", randomTransform);
+            // chart.selectAll(".svgSize").attr("transform", "scale(0.024) rotate(135)");
+        }
+
+        // console.log(incomingData);
+        function simulationRan(){
+            console.log("just ran the simulation");
+
+            chart.selectAll(".dataPoints").transition()
+              .attr("transform", function(d){ return "translate(" + d.x + "," + d.y + ")" } )
+            ;
+        }
+
+    }
+
+
+
+    budget.forEach(updateTuitionRiseHover);
+    function updateTuitionRiseHover(incomingData, i){
+        let className = ".chart" + i;
+        console.log("hover added!", className);
+        // add hover event
+        viz.selectAll(className)
+            .on("mouseover", function(d){
+                console.log(className);
+                let element = d3.select(this); // select the element
+                viz.selectAll(".budget_chart").transition().duration(500).attr("opacity", 0.4);
+                viz.selectAll(className).transition().duration(500).attr("opacity", 1);
+                // d3.select("#hoverInfo").attr("transform", getPos(d));
+                // d3.select("#hoverInfo").select("#collegeType").text(function(){ return budgetTypes[i] });
+                // d3.select("#hoverInfo").select("#yearNumber").text(function(){ return 2019 });
+                // d3.select("#hoverInfo").select("#yearAmount").text(function(){ return "not sure" });
+                // d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+            })
+            .on("mouseout", function(d){
+                // console.log(d);
+                let element = d3.select(this); // select the element
+                viz.selectAll(".budget_chart").transition().duration(500).attr("opacity", 1);
+                viz.selectAll(className).transition().duration(500).attr("opacity", 1);
+                // element.transition().duration(1000).attr("r", 4);
+                // d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
+                // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
+            })
+        ;
+
+    }
 }
 
 function tuitionRiseChart01(){
+    viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
+    viz.selectAll(".budget_chart").transition().duration(1000).attr("opacity", 0);
+    viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Tuition and Fee, Room and Board, from 1999 to 2019";
 
     // find max and min for x axis and y axis
     let xDomain = privateRise.map(function(datum){ return datum.year });
+    console.log(xDomain);
 
     let yMax = d3.max(privateRise, function(datum){ return formatDollar(datum.tfrb) });
     let yMin = d3.min(privateRise, function(datum){ return formatDollar(datum.netTfrb) });
     let yDomain = [0, yMax];
-    console.log(xDomain, yDomain);
+    // console.log(xDomain, yDomain);
 
     // create xScale and yScale
     xScale = d3.scaleBand()
@@ -307,14 +473,18 @@ function tuitionRiseChart01(){
     // draw axis
     let xAxis = d3.axisBottom(xScale);
     xAxisGroup = viz.select(".xaxis");
-    xAxisGroup.call(xAxis);
+    xAxisGroup.transition().duration(1000).call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
     yAxisGroup = viz.select(".yaxis");
-    yAxisGroup.call(yAxis);
+    yAxisGroup.transition().duration(1000).call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
+
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 1);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 1);
+
     var ticks = d3.selectAll(".tick text");
     ticks.each(function(_,i){
         if(i%3 !== 0) d3.select(this).attr("opacity", 0);
@@ -457,11 +627,11 @@ function tuitionRiseChart02(){
     // draw axis
     let xAxis = d3.axisBottom(xScale);
     xAxisGroup = viz.select(".xaxis");
-    xAxisGroup.call(xAxis);
+    xAxisGroup.transition().duration(1000).call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
     yAxisGroup = viz.select(".yaxis");
-    yAxisGroup.call(yAxis);
+    yAxisGroup.transition().duration(1000).call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
@@ -616,8 +786,10 @@ function tuitionRiseChart02(){
 // }
 
 function theoryChart01(){
-    viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 1);
+    viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
     viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 0);
+    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Student Grants, from 1999 to 2019";
 
@@ -639,11 +811,11 @@ function theoryChart01(){
     // draw axis
     let xAxis = d3.axisBottom(xScale);
     xAxisGroup = viz.select(".xaxis");
-    xAxisGroup.call(xAxis);
+    xAxisGroup.transition().duration(1000).call(xAxis);
     xAxisGroup.attr("transform", "translate(0, "+ (h-padding) +")");
     let yAxis = d3.axisLeft(yScale);
     yAxisGroup = viz.select(".yaxis");
-    yAxisGroup.call(yAxis);
+    yAxisGroup.transition().duration(1000).call(yAxis);
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
@@ -762,9 +934,11 @@ function theoryChart01(){
 
 function jobChart01(){
     viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 0);
-    viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 1);
-    viz.selectAll(".Young_chart").transition().duration(1000).attr("opacity", 1);
-    viz.selectAll(".All_chart").transition().duration(1000).attr("opacity", 1);
+    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
+
+    viz.selectAll(".Young_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
+    viz.selectAll(".All_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
 
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Unemployment Rate, from 1990 to 2019";
@@ -895,12 +1069,14 @@ function jobChart01(){
 
 }
 function jobChart02(){
-    viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 0);
     viz.selectAll(".wage_chart").transition().duration(1000).attr("opacity", 0);
-    viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 1);
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
 
     viz.selectAll(".Young_chart").transition().duration(1000).attr("opacity", 0);
+    viz.selectAll(".Young_chart").transition().delay(1000).attr("opacity", 0).attr("visibility", "hidden");
     viz.selectAll(".All_chart").transition().duration(1000).attr("opacity", 0);
+    viz.selectAll(".All_chart").transition().delay(1000).attr("opacity", 0).attr("visibility", "hidden");
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Underemployment Rate, from 1990 to 2019";
     // find max and min for x axis and y axis
@@ -1032,7 +1208,8 @@ function jobChart02(){
 
 function wageChart(){
     viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 0);
-    viz.selectAll(".wage_chart").transition().duration(1000).attr("opacity", 1);
+    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
 
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Labor Wage, from 1990 to 2019";
@@ -1176,7 +1353,13 @@ d3.select("#scrollingWrapper").on("scroll", function(){
   // tuitionRiseChart01();
   currentBox(function(box){
     // console.log("BOX", box);
-
+    if(box.id=="budget_chart" && box.id!=previousSection){
+      console.log("changing viz");
+      // trigger a new transition
+      previousSection = box.id;
+      // draw rise chart 01
+      budgetChart();
+    }
     if(box.id=="rise_chart_01" && box.id!=previousSection){
       console.log("changing viz");
       // trigger a new transition
@@ -1238,6 +1421,43 @@ function resized(){
 }
 window.addEventListener("resize", resized);
 
+
+// svgs
+let bill500 = `
+<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Group-Copy">
+        <rect id="Rectangle" fill="#F0EEE1" x="0" y="0" width="815" height="440"></rect>
+        <rect id="Rectangle" stroke="#8C8F8C" stroke-width="41" fill="#F0EEE1" x="46.5" y="45.5" width="722" height="349"></rect>
+        <path d="M26,25 L153,25 L153,52 C153,107.228475 108.228475,152 53,152 L26,152 L26,152 L26,25 Z" id="Rectangle" fill="#8C8F8C"></path>
+        <path d="M662,25 L789,25 L789,52 C789,107.228475 744.228475,152 689,152 L662,152 L662,152 L662,25 Z" id="Rectangle-Copy-2" fill="#8C8F8C" transform="translate(725.500000, 88.500000) scale(-1, 1) translate(-725.500000, -88.500000) "></path>
+        <path d="M26,288 L153,288 L153,315 C153,370.228475 108.228475,415 53,415 L26,415 L26,415 L26,288 Z" id="Rectangle-Copy" fill="#8C8F8C" transform="translate(89.500000, 351.500000) scale(1, -1) translate(-89.500000, -351.500000) "></path>
+        <path d="M662,288 L789,288 L789,315 C789,370.228475 744.228475,415 689,415 L662,415 L662,415 L662,288 Z" id="Rectangle-Copy-3" fill="#8C8F8C" transform="translate(725.500000, 351.500000) scale(-1, -1) translate(-725.500000, -351.500000) "></path>
+        <text id="500" font-family="SybariteHuge, Sybarite" font-size="180" font-weight="normal" fill="#8C8F8C">
+            <tspan x="240" y="285">500</tspan>
+        </text>
+        <text id="500" stroke="#F0EEE1" font-family="SybariteHuge, Sybarite" font-size="180" font-weight="normal" fill="#8C8F8C">
+            <tspan x="229" y="277">500</tspan>
+        </text>
+    </g>
+</g>
+`
+let bill100 = `
+<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+    <g id="Group">
+        <rect id="Rectangle" fill="#F0EEE1" x="0" y="0" width="815" height="440"></rect>
+        <rect id="Rectangle" stroke="#A0A4A0" stroke-width="41" fill="#F0EEE1" x="46.5" y="45.5" width="722" height="349"></rect>
+        <path d="M26,25 L153,25 L153,52 C153,107.228475 108.228475,152 53,152 L26,152 L26,152 L26,25 Z" id="Rectangle" fill="#A0A4A0"></path>
+        <path d="M662,25 L789,25 L789,52 C789,107.228475 744.228475,152 689,152 L662,152 L662,152 L662,25 Z" id="Rectangle-Copy-2" fill="#A0A4A0" transform="translate(725.500000, 88.500000) scale(-1, 1) translate(-725.500000, -88.500000) "></path>
+        <path d="M26,288 L153,288 L153,315 C153,370.228475 108.228475,415 53,415 L26,415 L26,415 L26,288 Z" id="Rectangle-Copy" fill="#A0A4A0" transform="translate(89.500000, 351.500000) scale(1, -1) translate(-89.500000, -351.500000) "></path>
+        <path d="M662,288 L789,288 L789,315 C789,370.228475 744.228475,415 689,415 L662,415 L662,415 L662,288 Z" id="Rectangle-Copy-3" fill="#A0A4A0" transform="translate(725.500000, 351.500000) scale(-1, -1) translate(-725.500000, -351.500000) "></path>
+        <text id="100" font-family="SybariteHuge, Sybarite" font-size="180" font-weight="normal" fill="#A0A4A0">
+            <tspan x="240" y="285">100</tspan>
+        </text>
+        <text id="100-copy" stroke="#F0EEE1" font-family="SybariteHuge, Sybarite" font-size="180" font-weight="normal" fill="#A0A4A0">
+            <tspan x="229" y="277">100</tspan>
+        </text>
+    </g>
+</g>`
 
 // ----------- Questions -------------
 // 1. Add transition between charts

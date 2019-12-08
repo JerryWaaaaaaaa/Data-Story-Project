@@ -13,11 +13,13 @@ img{
 .xaxis{
   font-family: 'Martel', serif;
   font-size: 12px;
+  color: #4f4f4f;
 }
 
 .yaxis{
   font-family: 'Martel', serif;
   font-size: 12px;
+  color: #4f4f4f;
 }
 
 path.line {
@@ -133,9 +135,14 @@ a:visited{
 #chart_title{
   text-align: right;
   padding-right: 60px;
+  /* color: #4f4f4f; */
 }
 
 svg{
   width: 100%;
   z-index: 0;
+}
+
+.svgSize{
+  /* transform-origin: 50% 50%; */
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="889px" height="888px" viewBox="0 0 889 888" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(444.500000, 444.000000) rotate(-45.000000) translate(-444.500000, -444.000000) translate(37.000000, 224.000000)">
+            <rect id="Rectangle" fill="#F0EEE1" x="0" y="0" width="815" height="440"></rect>
+            <rect id="Rectangle" stroke="#A0A4A0" stroke-width="41" fill="#F0EEE1" x="46.5" y="45.5" width="722" height="349"></rect>
+            <path d="M26,25 L153,25 L153,52 C153,107.228475 108.228475,152 53,152 L26,152 L26,152 L26,25 Z" id="Rectangle" fill="#A0A4A0"></path>
+            <path d="M662,25 L789,25 L789,52 C789,107.228475 744.228475,152 689,152 L662,152 L662,152 L662,25 Z" id="Rectangle-Copy-2" fill="#A0A4A0" transform="translate(725.500000, 88.500000) scale(-1, 1) translate(-725.500000, -88.500000) "></path>
+            <path d="M26,288 L153,288 L153,315 C153,370.228475 108.228475,415 53,415 L26,415 L26,415 L26,288 Z" id="Rectangle-Copy" fill="#A0A4A0" transform="translate(89.500000, 351.500000) scale(1, -1) translate(-89.500000, -351.500000) "></path>
+            <path d="M662,288 L789,288 L789,315 C789,370.228475 744.228475,415 689,415 L662,415 L662,415 L662,288 Z" id="Rectangle-Copy-3" fill="#A0A4A0" transform="translate(725.500000, 351.500000) scale(-1, -1) translate(-725.500000, -351.500000) "></path>
+            <text id="100" font-family="SybariteHuge, Sybarite" font-size="180" font-weight="normal" fill="#A0A4A0">
+                <tspan x="240" y="285">100</tspan>
+            </text>
+            <text id="100-copy" stroke="#F0EEE1" font-family="SybariteHuge, Sybarite" font-size="180" font-weight="normal" fill="#A0A4A0">
+                <tspan x="229" y="277">100</tspan>
+            </text>
+        </g>
+    </g>
+</svg>

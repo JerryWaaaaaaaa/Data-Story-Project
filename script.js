@@ -55,16 +55,18 @@ adjustVizHeight();
 
 
 // ----------- for budget
+let rawBudget;
 let budget = [[],[],[],[],[]];
 let budgetTypes = [];
 d3.csv("data/tuition_budget.csv").then(processBudgetData);
 function processBudgetData(data){
+    rawBudget = data[0];
     let target = data[0];
     budgetTypes = Object.keys(target);
     budgetTypes.splice( budgetTypes.indexOf(""), 1 );
     budgetTypes.splice( budgetTypes.indexOf("Total"), 1 );
     console.log("Keys", budgetTypes);
-    // console.log("raw budget", target);
+    console.log("raw budget", target);
     let bookNum = ["Books and Supplies", Math.floor(formatDollar(target["Books and Supplies"])/100), 2 ];
     let tuitionNum = ["Tuition and Fees", Math.floor(formatDollar(target["Tuition and Fees"])/500), 0];
     let roomNum = ["Room and Board", Math.floor(formatDollar(target["Room and Board"])/500), 1 ];
@@ -273,10 +275,12 @@ function setTuitionRiseHover(){
     let hoverCard = viz.append("g")
         .attr("id", "hoverInfo")
         // .attr("transform", "translate(0,0)")
-        .attr("opacity", 0);
+        .attr("opacity", 0)
+        .attr("visibility", "hidden")
+    ;
 
     hoverCard.append("rect")
-        .attr("width", 120)
+        .attr("width", 130)
         .attr("height", 86)
         .attr("x", 0)
         .attr("y", 0)
@@ -306,7 +310,7 @@ function setTuitionRiseHover(){
     hoverCard.append("text")
         .text("no data")
         .attr("id", "yearNumber")
-        .attr("x", textXPadding + 36)
+        .attr("x", textXPadding + 40)
         .attr("y", textYPadding * 2)
         .attr("font-size", 14)
         .attr("fill", "white")
@@ -323,8 +327,70 @@ function setTuitionRiseHover(){
     hoverCard.append("text")
         .text("no data")
         .attr("id", "yearAmount")
-        .attr("x", textXPadding + 54)
+        .attr("x", textXPadding + 62)
         .attr("y", textYPadding * 3)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
+}
+function setTuitionRiseHover02(){
+    let hoverCard = viz.append("g")
+        .attr("id", "hoverInfo02")
+        // .attr("transform", "translate(0,0)")
+        .attr("opacity", 0)
+        .attr("visibility", "hidden")
+    ;
+
+    hoverCard.append("rect")
+        .attr("width", 160)
+        .attr("height", 66)
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("fill", "black")
+    ;
+
+    let textXPadding = 10;
+    let textYPadding = 24;
+
+    hoverCard.append("text")
+        .attr("id", "budgetType")
+        .text("Type")
+        .attr("x", textXPadding)
+        .attr("y", textYPadding)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
+
+    // hoverCard.append("text")
+    //     .text("School Type:")
+    //     .attr("x", textXPadding)
+    //     .attr("y", textYPadding * 2)
+    //     .attr("font-size", 14)
+    //     .attr("fill", "white")
+    // ;
+    //
+    // hoverCard.append("text")
+    //     .text("no data")
+    //     .attr("id", "typeSchool")
+    //     .attr("x", textXPadding + 78)
+    //     .attr("y", textYPadding * 2)
+    //     .attr("font-size", 14)
+    //     .attr("fill", "white")
+    // ;
+
+    hoverCard.append("text")
+        .text("Amount:")
+        .attr("x", textXPadding)
+        .attr("y", textYPadding * 2)
+        .attr("font-size", 14)
+        .attr("fill", "white")
+    ;
+
+    hoverCard.append("text")
+        .text("no data")
+        .attr("id", "typeAmount")
+        .attr("x", textXPadding + 64)
+        .attr("y", textYPadding * 2)
         .attr("font-size", 14)
         .attr("fill", "white")
     ;
@@ -413,35 +479,49 @@ function budgetChart(){
 
     }
 
-
-
+    setTuitionRiseHover02();
     budget.forEach(updateTuitionRiseHover);
     function updateTuitionRiseHover(incomingData, i){
         let className = ".chart" + i;
-        console.log("hover added!", className);
+        console.log("hover added!", className, incomingData, i);
         // add hover event
         viz.selectAll(className)
             .on("mouseover", function(d){
-                console.log(className);
+                // let element = d3.select(this).selectAll(".dataPoints"); // select the element
                 let element = d3.select(this); // select the element
+                console.log(element);
                 viz.selectAll(".budget_chart").transition().duration(500).attr("opacity", 0.4);
                 viz.selectAll(className).transition().duration(500).attr("opacity", 1);
-                // d3.select("#hoverInfo").attr("transform", getPos(d));
-                // d3.select("#hoverInfo").select("#collegeType").text(function(){ return budgetTypes[i] });
-                // d3.select("#hoverInfo").select("#yearNumber").text(function(){ return 2019 });
-                // d3.select("#hoverInfo").select("#yearAmount").text(function(){ return "not sure" });
-                // d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+                d3.select("#hoverInfo02").attr("transform", getPos());
+                d3.select("#hoverInfo02").select("#budgetType").text(function(){ return budgetTypes[i] });
+                // d3.select("#hoverInfo02").select("#typeSchool").text(function(){ return "4-Year-Private" });
+                d3.select("#hoverInfo02").select("#typeAmount").text( getAmount() );
+                d3.select("#hoverInfo02").transition().duration(500).attr("opacity", 0.8).attr("visibility", "visible");
             })
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
                 viz.selectAll(".budget_chart").transition().duration(500).attr("opacity", 1);
                 viz.selectAll(className).transition().duration(500).attr("opacity", 1);
-                // element.transition().duration(1000).attr("r", 4);
-                // d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
+                // element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo02").transition().duration(500).attr("opacity", 0);
+                d3.select("#hoverInfo02").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
             })
         ;
+
+        function getPos(){
+            let d = budget[i][0];
+            let x = xScale(d.type);
+            let y = 0;
+            return "translate(" + x + "," + y + ")";
+        }
+
+        function getAmount(){
+            let d = budget[i][0];
+            let key = d.type;
+            return rawBudget[key];
+        }
 
     }
 }
@@ -582,19 +662,20 @@ function tuitionRiseChart01(){
             .on("mouseover", function(d){
                 console.log(type);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 8);
+                element.transition().duration(500).attr("r", 8);
                 d3.select("#hoverInfo").attr("transform", getPos(d));
                 d3.select("#hoverInfo").select("#collegeType").text(function(){ return "4-Year-" + type });
                 d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
                 d3.select("#hoverInfo").select("#yearAmount").text(function(){ return d.tfrb });
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8).attr("visibility", "visible");
             })
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 4);
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
-                // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
+                d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
+
             })
         ;
 
@@ -744,18 +825,19 @@ function tuitionRiseChart02(){
             .on("mouseover", function(d){
                 console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 8);
+                element.transition().duration(500).attr("r", 8);
                 d3.select("#hoverInfo").attr("transform", getPos(d));
                 d3.select("#hoverInfo").select("#collegeType").text(function(){ return "4-Year-" + type });
                 d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
                 d3.select("#hoverInfo").select("#yearAmount").text(function(){ return d.netTfrb });
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8).attr("visibility", "visible");
             })
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 4);
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
+
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
             })
         ;
@@ -767,23 +849,6 @@ function tuitionRiseChart02(){
         }
     }
 }
-// function organizeData(sourceData, outputData, keys){
-//     for (let i = 0; i < keys.length; i ++ ) {
-//         let k = keys[i];
-//         if ( !( (k == " ") || (k == "") ) ) {
-//             let year = k;
-//             let value = sourceData[year].replace("$","");
-//             value = value.replace(",","");
-//             value = parseInt(value)
-//             // console.log(value);
-//             let datum = {
-//                 "year": year,
-//                 "amount": value
-//             }
-//             outputData.push(datum);
-//         }
-//     }
-// }
 
 function theoryChart01(){
     viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
@@ -908,18 +973,18 @@ function theoryChart01(){
             .on("mouseover", function(d){
                 console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 8);
+                element.transition().duration(500).attr("r", 8);
                 d3.select("#hoverInfo").attr("transform", getPos(d));
                 d3.select("#hoverInfo").select("#collegeType").text(function(){ return "4-Year-" + type });
                 d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
                 d3.select("#hoverInfo").select("#yearAmount").text(function(){ return d.grants });
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8).attr("visibility", "visible");
             })
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 4);
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
             })
         ;
@@ -1044,18 +1109,19 @@ function jobChart01(){
             .on("mouseover", function(d){
                 console.log(typeKey, d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 8);
+                element.transition().duration(500).attr("r", 8);
                 d3.select("#hoverInfo").attr("transform", getPos(d));
                 d3.select("#hoverInfo").select("#collegeType").text(function(){ return type });
                 d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
                 d3.select("#hoverInfo").select("#yearAmount").text(function(){ return Math.floor(100*d[typeKey])/100 + "%" });
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8).attr("visibility", "visible");
             })
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 4);
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
+                d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
             })
         ;
@@ -1181,18 +1247,19 @@ function jobChart02(){
             .on("mouseover", function(d){
                 console.log(type, d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 8);
+                element.transition().duration(500).attr("r", 8);
                 d3.select("#hoverInfo").attr("transform", getPos(d));
                 d3.select("#hoverInfo").select("#collegeType").text(function(){ return type });
                 d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
                 d3.select("#hoverInfo").select("#yearAmount").text(function(){ return Math.floor(d[typeKey]*100)/100 + "%" });
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8).attr("visibility", "visible");
             })
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 4);
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
+                d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
             })
         ;
@@ -1316,18 +1383,19 @@ function wageChart(){
             .on("mouseover", function(d){
                 // console.log(typeKey, d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 8);
+                element.transition().duration(500).attr("r", 8);
                 d3.select("#hoverInfo").attr("transform", getPos(d));
                 d3.select("#hoverInfo").select("#collegeType").text(function(){ return title });
                 d3.select("#hoverInfo").select("#yearNumber").text(function(){ return d.year });
                 d3.select("#hoverInfo").select("#yearAmount").text(function(){ return "$" + d[type] });
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0.8);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0.8).attr("visibility", "visible");
             })
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(1000).attr("r", 4);
-                d3.select("#hoverInfo").transition().duration(1000).attr("opacity", 0);
+                element.transition().duration(500).attr("r", 4);
+                d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
+                d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
             })
         ;

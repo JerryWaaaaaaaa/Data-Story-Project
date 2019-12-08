@@ -126,7 +126,7 @@ a:visited{
 
 #viz{
   width: 44%;
-  height: 30%;
+  height: 28%;
   position: fixed;
   top: 16vh;
   left: 48%;
@@ -135,6 +135,7 @@ a:visited{
 #chart_title{
   text-align: right;
   padding-right: 60px;
+  margin-bottom: 0px;
   /* color: #4f4f4f; */
 }
 
@@ -145,4 +146,14 @@ svg{
 
 .svgSize{
   /* transform-origin: 50% 50%; */
+}
+
+#hoverInfo{
+  font-family: 'Martel', serif;
+  font-size: 8px;
+}
+
+#hoverInfo02{
+  font-family: 'Martel', serif;
+  font-size: 8px;
 }

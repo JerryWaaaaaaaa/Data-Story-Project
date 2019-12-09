@@ -19,7 +19,7 @@ export default function currentBox(cb){
   boxes.forEach(box=>{
     let boxInContent = box.getBoundingClientRect().top;
     // console.log(box.id, boxInContent);
-    if(Math.abs(boxInContent-midpoint) < 10){
+    if(Math.abs(boxInContent-midpoint) < 50){
        cb(box);
     }
   });

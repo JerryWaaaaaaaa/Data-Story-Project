@@ -236,9 +236,15 @@ function processUnderemployedData(data){
 // ----------- for wage
 let wage = [];
 
+let color25 = "#eeb462";
+let color75 = "#dc8665";
+let colorMid = "#cd7672";
+let colorHighMid = "#68b2a0";
+
+
 d3.csv("data/wage.csv").then(processWageData);
 function processWageData(data){
-    // console.log("raw wage", data);
+    console.log("raw wage", data);
     let collegeMid = 0;
     let college25 = 0;
     let college75 = 0;
@@ -1300,7 +1306,7 @@ function wageChart(){
     viz.selectAll(".wage_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
 
     // chane chart chart
-    document.getElementById("chart_title").innerHTML = "Labor Wage, from 1990 to 2019";
+    document.getElementById("chart_title").innerHTML = "Labor Wage, from 1990 to 2018";
     // find max and min for x axis and y axis
     let allYears = wage.map(function(datum){return datum.year});
 
@@ -1342,10 +1348,10 @@ function wageChart(){
         let chartColor;
         let toSelect = "." + type + "_chart";
         // do the color here
-        if (type == "college25"){ chartColor = youngColor; }
-        if (type == "college75"){ chartColor = allColor; }
-        if (type == "collegeMid"){ chartColor = recentColor; }
-        if (type == "highSchoolMid"){ chartColor = collegeColor; }
+        if (type == "college25"){ chartColor = color25; }
+        if (type == "college75"){ chartColor = color75; }
+        if (type == "collegeMid"){ chartColor = colorMid; }
+        if (type == "highSchoolMid"){ chartColor = colorHighMid; }
 
         let chart = viz.select(toSelect);
 

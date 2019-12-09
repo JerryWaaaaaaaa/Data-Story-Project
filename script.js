@@ -29,8 +29,8 @@ viz.append("g").attr("class", "budget_chart chart4").attr("opacity", 0).attr("vi
 
 viz.append("g").attr("class", "tuition_rise_chart public_chart").attr("opacity", 0).attr("visibility", "hidden");
 viz.append("g").attr("class", "tuition_rise_chart private_chart").attr("opacity", 0).attr("visibility", "hidden");
-viz.selectAll(".tuition_rise_chart").append("path").attr("class", "paths path01").attr("opacity", 0).attr("fill", "none").attr("stroke", "none");
 viz.selectAll(".tuition_rise_chart").append("path").attr("class", "paths path02").attr("opacity", 0).attr("fill", "none").attr("stroke", "none").style("stroke-dasharray", ("6, 6"));
+viz.selectAll(".tuition_rise_chart").append("path").attr("class", "paths path01").attr("opacity", 0).attr("fill", "none").attr("stroke", "none");
 
 viz.append("g").attr("class", "employment_chart All_chart").attr("opacity", 0).attr("visibility", "hidden");
 viz.append("g").attr("class", "employment_chart Young_chart").attr("opacity", 0).attr("visibility", "hidden");
@@ -503,7 +503,7 @@ function budgetChart(){
                 let element = d3.select(this); // select the element
                 viz.selectAll(".budget_chart").transition().duration(500).attr("opacity", 1);
                 viz.selectAll(className).transition().duration(500).attr("opacity", 1);
-                // element.transition().duration(500).attr("r", 4);
+                // element.transition().duration(500).attr("r", 5);
                 d3.select("#hoverInfo02").transition().duration(500).attr("opacity", 0);
                 d3.select("#hoverInfo02").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
@@ -513,7 +513,7 @@ function budgetChart(){
         function getPos(){
             let d = budget[i][0];
             let x = xScale(d.type);
-            let y = 0;
+            let y = d.y - 120;
             return "translate(" + x + "," + y + ")";
         }
 
@@ -583,6 +583,7 @@ function tuitionRiseChart01(){
         // line_sit.select("path").attr("d", line).attr("fill", "none").attr("stroke", publicColor);
         line_sit.select(".path01").transition().attr("stroke", privateColor);
         line_sit.select(".path01").transition().duration(1000).attr("d", line).attr("opacity", 1);
+        line_sit.select(".path02").transition().duration(1000).attr("opacity", 0);
 
         let pointsGroup = chart.selectAll(".dataPoints").data(privateRise);
 
@@ -596,11 +597,12 @@ function tuitionRiseChart01(){
             .append("circle")
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .attr("r", 4)
+                .attr("r", 5)
                 .attr("fill", privateColor)
                 .attr("opacity", 1)
                 .attr("class", "privateTFRB")
             ;
+
         ;
 
         pointsGroup.transition().duration(1000).attr("transform", function(d){
@@ -609,6 +611,27 @@ function tuitionRiseChart01(){
               return "translate(" + x + "," + y + ")";
             })
         ;
+
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(privateRise);
+        console.log("compare data", pointsGroup_compare);
+        pointsGroup_compare.enter().append("g").attr("class", "dataPoints_compare")
+            .attr("transform", function(d){
+              let x = xScale( d.year ) + padding*0;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+            .attr("opacity", 0)
+            .attr("visibility", "hidden")
+            .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", 5)
+                .attr("fill", privateColor)
+                .attr("opacity", 0.5)
+                .attr("class", "privateTFRB")
+            ;
+        pointsGroup_compare.exit().remove();
+        pointsGroup_compare.transition().attr("opacity", 0);
     }
     publicChart();
     function publicChart(){
@@ -621,6 +644,7 @@ function tuitionRiseChart01(){
         let line_sit = chart.datum(publicRise);
         line_sit.select(".path01").transition().attr("stroke", publicColor);
         line_sit.select(".path01").transition().duration(1000).attr("d", line).attr("opacity", 1);
+        line_sit.select(".path02").transition().duration(1000).attr("opacity", 0);
 
         let pointsGroup = chart.selectAll(".dataPoints").data(publicRise);
 
@@ -634,7 +658,7 @@ function tuitionRiseChart01(){
             .append("circle")
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .attr("r", 4)
+                .attr("r", 5)
                 .attr("fill", publicColor)
                 .attr("opacity", 1)
                 .attr("class", "publicTFRB")
@@ -647,6 +671,27 @@ function tuitionRiseChart01(){
               return "translate(" + x + "," + y + ")";
             })
         ;
+
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(publicRise);
+        console.log("compare data", pointsGroup_compare);
+        pointsGroup_compare.enter().append("g").attr("class", "dataPoints_compare")
+            .attr("transform", function(d){
+              let x = xScale( d.year ) + padding*0;
+              let y = yScale( formatDollar(d.tfrb) );
+              return "translate(" + x + "," + y + ")";
+            })
+            .attr("opacity", 0)
+            .attr("visibility", "hidden")
+            .append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", 5)
+                .attr("fill", publicColor)
+                .attr("opacity", 0.5)
+                .attr("class", "publicTFRB")
+            ;
+        pointsGroup_compare.exit().remove();
+        pointsGroup_compare.transition().attr("opacity", 0);
     }
 
     // hovers
@@ -672,7 +717,7 @@ function tuitionRiseChart01(){
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(500).attr("r", 4);
+                element.transition().duration(500).attr("r", 5);
                 d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
                 d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
 
@@ -726,34 +771,18 @@ function tuitionRiseChart02(){
     function privateChart(){
         let chart = viz.select(".private_chart");
 
-        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(privateRise);
-        console.log("compare data", pointsGroup_compare);
-        pointsGroup_compare.enter().append("g").attr("class", "dataPoints_compare")
-            .attr("transform", function(d){
-              let x = xScale( d.year ) + padding*0;
-              let y = yScale( formatDollar(d.tfrb) );
-              return "translate(" + x + "," + y + ")";
-            })
-            .attr("opacity", 0)
-            .append("circle")
-                .attr("cx", 0)
-                .attr("cy", 0)
-                .attr("r", 3)
-                .attr("fill", privateColor)
-                .attr("opacity", 1)
-                .attr("class", "privateTFRB")
-            ;
-        pointsGroup_compare.exit().remove();
-        pointsGroup_compare.transition().attr("opacity", 0);
-
         let line = d3.line()
                          .x(function(d){ return xScale( d.year )+padding*0 })
                          .y(function(d){ return yScale( formatDollar(d.netTfrb) ) })
         ;
+        let line2 = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding*0 })
+                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        ;
         let line_sit = chart.datum(privateRise);
         line_sit.select(".path01").transition().attr("stroke", privateColor);
         line_sit.select(".path01").transition().duration(1000).attr("d", line).attr("opacity", 1);
-        line_sit.select(".path02").transition().duration(1000).attr("opacity", 0);
+        line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", privateColor);
 
         let pointsGroup = chart.selectAll(".dataPoints").data(privateRise);
         // console.log("riseChart02", pointsGroup);
@@ -765,39 +794,28 @@ function tuitionRiseChart02(){
             })
         ;
 
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(privateRise);
+        console.log("compare", pointsGroup_compare);
+
+        pointsGroup_compare.transition().attr("opacity", 1).attr("visibility", "visible");
+
     }
     publicChart();
     function publicChart(){
         let chart = viz.select(".public_chart");
 
-        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(publicRise);
-        console.log("compare data", pointsGroup_compare);
-        pointsGroup_compare.enter().append("g").attr("class", "dataPoints_compare")
-            .attr("transform", function(d){
-              let x = xScale( d.year ) + padding*0;
-              let y = yScale( formatDollar(d.tfrb) );
-              return "translate(" + x + "," + y + ")";
-            })
-            .attr("opacity", 0)
-            .append("circle")
-                .attr("cx", 0)
-                .attr("cy", 0)
-                .attr("r", 3)
-                .attr("fill", publicColor)
-                .attr("opacity", 1)
-                .attr("class", "publicTFRB")
-            ;
-        pointsGroup_compare.exit().remove();
-        pointsGroup_compare.transition().attr("opacity", 0);
-
         let line = d3.line()
                          .x(function(d){ return xScale( d.year )+padding*0 })
                          .y(function(d){ return yScale( formatDollar(d.netTfrb) ) })
         ;
+        let line2 = d3.line()
+                         .x(function(d){ return xScale( d.year )+padding*0 })
+                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        ;
         let line_sit = chart.datum(publicRise);
         line_sit.select(".path01").transition().attr("stroke", publicColor);
         line_sit.select(".path01").transition().duration(1000).attr("d", line).attr("opacity", 1);
-        line_sit.select(".path02").transition().duration(1000).attr("opacity", 0);
+        line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", publicColor);
 
         let pointsGroup = chart.selectAll(".dataPoints").data(publicRise);
         // console.log("riseChart02", pointsGroup);
@@ -809,6 +827,9 @@ function tuitionRiseChart02(){
             })
         ;
 
+        let pointsGroup_compare = chart.selectAll(".dataPoints_compare").data(publicRise);
+        console.log("compare", pointsGroup_compare);
+        pointsGroup_compare.transition().attr("opacity", 1).attr("visibility", "visible");
 
     }
 
@@ -835,7 +856,7 @@ function tuitionRiseChart02(){
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(500).attr("r", 4);
+                element.transition().duration(500).attr("r", 5);
                 d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
 
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
@@ -899,15 +920,15 @@ function theoryChart01(){
                          .x(function(d){ return xScale( d.year )+padding*0 })
                          .y(function(d){ return yScale( formatDollar(d.grants) ) })
         ;
-        let line2 = d3.line()
-                         .x(function(d){ return xScale( d.year )+padding*0 })
-                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
-        ;
+        // let line2 = d3.line()
+        //                  .x(function(d){ return xScale( d.year )+padding*0 })
+        //                  .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        // ;
 
         let line_sit = chart.datum(privateRise);
         line_sit.select(".path01").transition().attr("stroke", privateColor);
         line_sit.select(".path01").transition().duration(1000).attr("d", line).attr("opacity", 1);
-        line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", privateColor);
+        // line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", privateColor);
 
 
         let pointsGroup = chart.selectAll(".dataPoints").data(privateRise);
@@ -934,15 +955,15 @@ function theoryChart01(){
                          .x(function(d){ return xScale( d.year )+padding*0 })
                          .y(function(d){ return yScale( formatDollar(d.grants) ) })
         ;
-        let line2 = d3.line()
-                         .x(function(d){ return xScale( d.year )+padding*0 })
-                         .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
-        ;
+        // let line2 = d3.line()
+        //                  .x(function(d){ return xScale( d.year )+padding*0 })
+        //                  .y(function(d){ return yScale( formatDollar(d.tfrb) ) })
+        // ;
 
         let line_sit = chart.datum(publicRise);
         line_sit.select(".path01").transition().attr("stroke", publicColor);
         line_sit.select(".path01").transition().duration(1000).attr("d", line).attr("opacity", 1);
-        line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", publicColor);
+        // line_sit.select(".path02").transition().attr("d", line2).attr("opacity", 1).attr("stroke", publicColor);
 
         let pointsGroup = chart.selectAll(".dataPoints").data(publicRise);
 
@@ -983,7 +1004,7 @@ function theoryChart01(){
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(500).attr("r", 4);
+                element.transition().duration(500).attr("r", 5);
                 d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
             })
@@ -1077,7 +1098,7 @@ function jobChart01(){
             .append("circle")
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .attr("r", 4)
+                .attr("r", 5)
                 .attr("fill", chartColor)
                 .attr("opacity", 1)
                 .attr("class", "rate")
@@ -1119,7 +1140,7 @@ function jobChart01(){
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(500).attr("r", 4);
+                element.transition().duration(500).attr("r", 5);
                 d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
                 d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
@@ -1215,7 +1236,7 @@ function jobChart02(){
             .append("circle")
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .attr("r", 4)
+                .attr("r", 5)
                 .attr("fill", chartColor)
                 .attr("opacity", 1)
                 .attr("class", "rate")
@@ -1257,7 +1278,7 @@ function jobChart02(){
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(500).attr("r", 4);
+                element.transition().duration(500).attr("r", 5);
                 d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
                 d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");
@@ -1349,7 +1370,7 @@ function wageChart(){
             .append("circle")
                 .attr("cx", 0)
                 .attr("cy", 0)
-                .attr("r", 4)
+                .attr("r", 5)
                 .attr("fill", chartColor)
                 .attr("opacity", 1)
                 .attr("class", "rate")
@@ -1393,7 +1414,7 @@ function wageChart(){
             .on("mouseout", function(d){
                 // console.log(d);
                 let element = d3.select(this); // select the element
-                element.transition().duration(500).attr("r", 4);
+                element.transition().duration(500).attr("r", 5);
                 d3.select("#hoverInfo").transition().duration(500).attr("opacity", 0);
                 d3.select("#hoverInfo").transition().delay(500).attr("visibility", "hidden");
                 // d3.select("#hoverInfo").attr("transform", "translate(0,0)");

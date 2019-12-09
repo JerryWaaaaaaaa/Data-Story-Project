@@ -8,7 +8,7 @@ import currentBox from "./leonScroller.js";
 // (see adjustVizHeight and resized function
 // that are defined at the bottom)
 let w, h;
-let heightRatio = 0.6;
+let heightRatio = 0.625;
 let padding = 60;
 
 let viz = d3.select("#viz")

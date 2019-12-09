@@ -1555,8 +1555,9 @@ let bill100 = `
 </g>`
 
 // ----------- Questions -------------
-// 1. Add transition between charts
-// 2. Comment to the chart
-// 3. replace dots with dollar svg
-// 4. show years on xaxis every other year
-// 5. hover covers content
+// 1. Add transition between charts [done]
+// 2. Comment to the chart [tbd]
+// 3. replace dots with dollar svg [done]
+// 4. show years on xaxis every other year [done]
+// 5. hover covers content [done]
+// 6. animation interrupted halfway

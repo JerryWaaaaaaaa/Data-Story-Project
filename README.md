@@ -1,6 +1,7 @@
 # Data Story
 
 The project is a story that emerges from and is told alongside a dataset.
+See the project [here](https://data-story-project.jerrywaaaaaaaa.now.sh/).
 
 ## Introduction
 

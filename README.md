@@ -4,6 +4,10 @@ The is the final project for my undergraduate course [Critical Data & Visualizat
 
 [READ THE STORY HERE!](https://data-story-project.jerrywaaaaaaaa.now.sh/)
 
+## Preview
+
+
+
 ## Context
 
 Since the very beginning of the emergence of college education, it has been believed that college education can either keep or raise people's social classes. A simple example is that, back then, people went for philosophy, history, and law. While nowadays, people turn their attention from liberal arts to computer science, computer engineering, and finance. In addition, with this belief, people have tried hard and paid a lot to get a college education.  
@@ -27,11 +31,18 @@ Working hours can relate to many aspects of hour life, and it can also reflect m
 
 Even though there are already many correlations found under this topic, there are still some other aspects that I want to explore. Does the decrease of working hours bring more happiness to people? How is working hours related to [Human Development Index](https://ourworldindata.org/human-development-index)? Is it possible to show the working hours for only male or female, only skilled workers or unskilled workers?
 
-## Presentation Materials
-- [Subject Presentation]
-- [Work In Progress Presentation](https://docs.google.com/presentation/d/1BBHRAaUVypzMHAJgxWnPxGbdQ2ACZH3EDMq94SzJ36c/edit?usp=sharing)
+## Self Evaluation
 
-## Data Resources
+I'm glad that I took this project as an opportunity to do a sophisticated research on college tuition, student grants, and job market. I'm also glad that by reviewing some existing theories using my visualization, I challenged my assumption as well and reformed new knowledge upon it.
+
+However, I do feel like there are much more to talk about on this topic. For example, based on the fact that Net TFRB hasn't risen that much, I can further examine how student components (students with different family income ranges) have changed, to further review how policies on student grants and loans have effected people's education resources. In regards of theories on tuition rise, there are also correlations to governmental financial support, financial trend, etc. I hope I could examine more.
+
+## Presentation Materials
+- Subject Presentation
+- [Work In Progress Presentation](https://docs.google.com/presentation/d/1BBHRAaUVypzMHAJgxWnPxGbdQ2ACZH3EDMq94SzJ36c/edit?usp=sharing)
+- Final Presentation
+
+## Reference - Data Resources
 - [UIS Statistics](http://data.uis.unesco.org/)
 - [The World Bank](http://datatopics.worldbank.org/education/indicators)
 - [PayScale College ROI Report](https://www.payscale.com/college-roi)
@@ -41,12 +52,12 @@ Even though there are already many correlations found under this topic, there ar
 - [Federal Reserve Bank of New York](https://www.newyorkfed.org/research/college-labor-market/college-labor-market_unemployment.html)
 
 ## Other Reading Resources
-- [Liberal Arts](https://www.qdaily.com/articles/61757.html)(This one is in Chinese.)
-- [Intensive Parenting](https://www.qdaily.com/articles/59812.html)(This one is in Chinese)
-- [History of College Education](https://college-education.procon.org/history-of-college-education/)
-- [Tuition Ranking](https://college-education.procon.org/highest-and-lowest-tuitions-of-ranked-us-colleges-universities/)
-- [Rise in College Tuition](https://www.americanactionforum.org/research/summary-accounting-rise-college-tuition/)
-- [College Pricing Highlights](https://research.collegeboard.org/trends/college-pricing/highlights)
-- [Graduate Income](https://www.wsj.com/articles/ny-fed-report-finds-rising-incomes-falling-unemployment-for-young-college-graduates-1454079989)
-- [Tuition Components](https://bigfuture.collegeboard.org/pay-for-college/college-costs/quick-guide-college-costs)
-- [Student Loan](https://www.investopedia.com/student-loan-debt-2019-statistics-and-outlook-4772007)
+- [About Liberal Arts](https://www.qdaily.com/articles/61757.html) (This one is in Chinese.)
+- [About Intensive Parenting](https://www.qdaily.com/articles/59812.html) (This one is in Chinese)
+- [About History of College Education](https://college-education.procon.org/history-of-college-education/)
+- [About Tuition Ranking](https://college-education.procon.org/highest-and-lowest-tuitions-of-ranked-us-colleges-universities/)
+- [About Rise in College Tuition](https://www.americanactionforum.org/research/summary-accounting-rise-college-tuition/)
+- [About College Pricing Highlights](https://research.collegeboard.org/trends/college-pricing/highlights)
+- [About Graduate Income](https://www.wsj.com/articles/ny-fed-report-finds-rising-incomes-falling-unemployment-for-young-college-graduates-1454079989)
+- [About Tuition Components](https://bigfuture.collegeboard.org/pay-for-college/college-costs/quick-guide-college-costs)
+- [About Student Loan](https://www.investopedia.com/student-loan-debt-2019-statistics-and-outlook-4772007)

@@ -1,11 +1,13 @@
-# Data Story
+# Data Story - College Education
 
-The project is a story that emerges from and is told alongside a dataset.
+The is the final project for my undergraduate course Critical Data Visualization.  
 Click to read the [story](https://data-story-project.jerrywaaaaaaaa.now.sh/).
 
 ## Context
 
-Since the very beginning of the emergence of college education, it has been believed that college education can either keep or raise people's social classes. A simple example is that, back then, people went for philosophy, history, and law. While nowadays, people turn their attention from liberal arts to computer science, computer engineering, and finance. In addition, with this belief, people have tried hard and paid a lot to get a college education. However, when I went job hunting months ago, I started to realize this huge financial gap between the spending on education and the return I get (salary). With this rising tuition and weak labor market, I started to doubt about this belief of college education. These doubts led me to more research on topics such as returns on education and labor market trends. Meanwhile, I collected some data and visualized them as a tool to review the claims made on college education. 
+Since the very beginning of the emergence of college education, it has been believed that college education can either keep or raise people's social classes. A simple example is that, back then, people went for philosophy, history, and law. While nowadays, people turn their attention from liberal arts to computer science, computer engineering, and finance. In addition, with this belief, people have tried hard and paid a lot to get a college education.  
+
+However, when I went job hunting months ago, I started to realize this huge financial gap between the spending on education and the return I get (salary). With this rising tuition and weak labor market, I started to doubt about this belief of college education. These doubts led me to more research on topics such as returns on education and labor market trends. Meanwhile, I collected some data and visualized them as a tool to review the claims made on college education.
 
 ### The Dataset - Returns to Education
 Click [here](https://ourworldindata.org/returns-to-education) to see the detailed description.

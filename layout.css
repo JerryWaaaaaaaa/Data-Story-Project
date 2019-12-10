@@ -77,12 +77,14 @@ h3{
 #menu_bar{
   width:30%;
   position: fixed;
+  padding-right: 60px;
   bottom: 10vh;
-  left: 82%;
+  right: 8%;
 }
 
 .menu_item{
   display: block;
+  text-align: right;
   font-family: 'DM Serif Display', serif;
   font-size: 20px;
 }
@@ -130,7 +132,7 @@ a:visited{
   width: 48%;
   height: 30%;
   position: fixed;
-  top: 16vh;
+  top: 12vh;
   left: 44%;
 }
 

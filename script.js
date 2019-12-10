@@ -67,11 +67,11 @@ function processBudgetData(data){
     budgetTypes.splice( budgetTypes.indexOf("Total"), 1 );
     console.log("Keys", budgetTypes);
     console.log("raw budget", target);
-    let bookNum = ["Books and Supplies", Math.floor(formatDollar(target["Books and Supplies"])/100), 2 ];
+    let bookNum = ["Books and Supplies", Math.floor(formatDollar(target["Books and Supplies"])/500), 2 ];
     let tuitionNum = ["Tuition and Fees", Math.floor(formatDollar(target["Tuition and Fees"])/500), 0];
     let roomNum = ["Room and Board", Math.floor(formatDollar(target["Room and Board"])/500), 1 ];
-    let transportationNum = ["Transportation", Math.floor(formatDollar(target["Transportation"])/100), 3 ];
-    let otherNum = ["Other Expenses", Math.floor(formatDollar(target["Other Expenses"])/100), 4 ];
+    let transportationNum = ["Transportation", Math.floor(formatDollar(target["Transportation"])/500), 3 ];
+    let otherNum = ["Other Expenses", Math.floor(formatDollar(target["Other Expenses"])/500), 4 ];
     // console.log("Tuition and Fees", tuitionNum);
     // console.log("Books and Supplies", bookNum);
     // console.log("Room and Board", roomNum);
@@ -402,6 +402,23 @@ function setTuitionRiseHover02(){
     ;
 }
 
+function beginChart(){
+
+    // chane chart chart
+    document.getElementById("chart_title").innerHTML = "Keep Scrolling ⬇️";
+    // fade in & out effect
+    viz.selectAll(".budget_chart").transition().duration(1000).attr("opacity", 0);
+
+    viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
+
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 0);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 0);
+
+}
+
 function budgetChart(){
 
     // fade in & out effect
@@ -438,7 +455,8 @@ function budgetChart(){
         // console.log(i);
         let billSvg;
         if ( i == 0 || i == 1) { billSvg = bill500 }
-        else { billSvg = bill100 }
+        // else { billSvg = bill100 }
+        else { billSvg = bill500 }
         let toSelect = ".chart" + i;
         let chart = viz.select(toSelect);
         // console.log(incomingData);
@@ -1489,6 +1507,13 @@ d3.select("#scrollingWrapper").on("scroll", function(){
   // tuitionRiseChart01();
   currentBox(function(box){
     // console.log("BOX", box);
+    if(box.id=="begin_chart" && box.id!=previousSection){
+      console.log("changing viz");
+      // trigger a new transition
+      previousSection = box.id;
+      // draw rise chart 01
+      beginChart();
+    }
     if(box.id=="budget_chart" && box.id!=previousSection){
       console.log("changing viz");
       // trigger a new transition

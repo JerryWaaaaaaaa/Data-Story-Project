@@ -1,13 +1,14 @@
 # Data Story - College Education
 
-The is the final project for my undergraduate course Critical Data Visualization.  
-Click to read the [story](https://data-story-project.jerrywaaaaaaaa.now.sh/).
+The is the final project for my undergraduate course [Critical Data & Visualization](https://github.com/leoneckert/cdv-fall19).  
+
+[READ THE STORY HERE!](https://data-story-project.jerrywaaaaaaaa.now.sh/)
 
 ## Context
 
 Since the very beginning of the emergence of college education, it has been believed that college education can either keep or raise people's social classes. A simple example is that, back then, people went for philosophy, history, and law. While nowadays, people turn their attention from liberal arts to computer science, computer engineering, and finance. In addition, with this belief, people have tried hard and paid a lot to get a college education.  
 
-However, when I went job hunting months ago, I started to realize this huge financial gap between the spending on education and the return I get (salary). With this rising tuition and weak labor market, I started to doubt about this belief of college education. These doubts led me to more research on topics such as returns on education and labor market trends. Meanwhile, I collected some data and visualized them as a tool to review the claims made on college education.
+However, when I started looking for jobs after graduation months ago, I started to realize this huge financial gap between the spending on education and the return I get (salary). With this rising tuition and weak labor market, I started to doubt about this belief of college education. These doubts led me to more research on topics such as returns on education and labor market trends. Meanwhile, I collected some data and visualized them as a tool to review the claims made on college education.
 
 ### The Dataset - Returns to Education
 Click [here](https://ourworldindata.org/returns-to-education) to see the detailed description.
@@ -25,7 +26,6 @@ Click [here](https://ourworldindata.org/working-hours) to see the detailed descr
 Working hours can relate to many aspects of hour life, and it can also reflect many sociological phenomena. The dataset talks about the change of working hours from the Industrial Revolution. It also indicates that people in richer countries would work less. It's also somehow related to gender inequality in housework.
 
 Even though there are already many correlations found under this topic, there are still some other aspects that I want to explore. Does the decrease of working hours bring more happiness to people? How is working hours related to [Human Development Index](https://ourworldindata.org/human-development-index)? Is it possible to show the working hours for only male or female, only skilled workers or unskilled workers?
-
 
 ## Presentation Materials
 - [Subject Presentation]

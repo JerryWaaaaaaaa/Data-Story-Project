@@ -403,10 +403,15 @@ function setTuitionRiseHover02(){
 }
 
 function budgetChart(){
+
     // fade in & out effect
-    viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 0);
-    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
     viz.selectAll(".budget_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
+    viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 0);
+
+    // viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
 
 
     // chane chart chart
@@ -535,7 +540,11 @@ function budgetChart(){
 function tuitionRiseChart01(){
     viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
     viz.selectAll(".budget_chart").transition().duration(1000).attr("opacity", 0);
+
     viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    // viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
 
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Tuition and Fee, Room and Board, from 1999 to 2019";
@@ -738,6 +747,11 @@ function tuitionRiseChart01(){
     }
 }
 function tuitionRiseChart02(){
+
+    viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    // viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Net TFRB, from 1999 to 2019";
 
@@ -767,6 +781,8 @@ function tuitionRiseChart02(){
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 1);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 1);
     var ticks = d3.selectAll(".tick text");
     // ticks.each(function(_,i){
     //     if(i%3 !== 0) d3.select(this).remove();
@@ -880,7 +896,11 @@ function tuitionRiseChart02(){
 function theoryChart01(){
     viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
     viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 0);
+
+    viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    // viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
     viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
 
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Student Grants, from 1999 to 2019";
@@ -911,6 +931,8 @@ function theoryChart01(){
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 1);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 1);
     var ticks = d3.selectAll(".tick text");
     ticks.each(function(_,i){
         d3.select(this).attr("opacity", 1);
@@ -1026,11 +1048,15 @@ function theoryChart01(){
 
 function jobChart01(){
     viz.selectAll(".tuition_rise_chart").transition().duration(1000).attr("opacity", 0);
-    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
     viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
 
     viz.selectAll(".Young_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
     viz.selectAll(".All_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
+
+    viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    // viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
 
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Unemployment Rate, from 1990 to 2019";
@@ -1061,6 +1087,8 @@ function jobChart01(){
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 1);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 1);
     var ticks = d3.selectAll(".tick text");
     ticks.each(function(_,i){
         d3.select(this).attr("opacity", 1);
@@ -1163,13 +1191,18 @@ function jobChart01(){
 }
 function jobChart02(){
     viz.selectAll(".wage_chart").transition().duration(1000).attr("opacity", 0);
-    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
     viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
 
     viz.selectAll(".Young_chart").transition().duration(1000).attr("opacity", 0);
     viz.selectAll(".Young_chart").transition().delay(1000).attr("opacity", 0).attr("visibility", "hidden");
     viz.selectAll(".All_chart").transition().duration(1000).attr("opacity", 0);
     viz.selectAll(".All_chart").transition().delay(1000).attr("opacity", 0).attr("visibility", "hidden");
+
+    viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    // viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
+
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Underemployment Rate, from 1990 to 2019";
     // find max and min for x axis and y axis
@@ -1199,6 +1232,8 @@ function jobChart02(){
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 1);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 1);
     var ticks = d3.selectAll(".tick text");
     ticks.each(function(_,i){
         d3.select(this).attr("opacity", 1);
@@ -1302,8 +1337,12 @@ function jobChart02(){
 
 function wageChart(){
     viz.selectAll(".employment_chart").transition().duration(1000).attr("opacity", 0);
-    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
     viz.selectAll(".wage_chart").transition().duration(1000).attr("opacity", 1).attr("visibility", "visible");
+
+    viz.selectAll(".budget_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".tuition_rise_chart").transition().delay(1000).attr("visibility", "hidden");
+    viz.selectAll(".employment_chart").transition().delay(1000).attr("visibility", "hidden");
+    // viz.selectAll(".wage_chart").transition().delay(1000).attr("visibility", "hidden");
 
     // chane chart chart
     document.getElementById("chart_title").innerHTML = "Labor Wage, from 1990 to 2018";
@@ -1334,6 +1373,8 @@ function wageChart(){
     yAxisGroup.attr("transform", "translate("+padding+",0)");
     xAxisGroup.selectAll("line").remove();
     yAxisGroup.selectAll("line").remove();
+    viz.select(".xaxis").transition().duration(1000).attr("opacity", 1);
+    viz.select(".yaxis").transition().duration(1000).attr("opacity", 1);
     var ticks = d3.selectAll(".tick text");
     ticks.each(function(_,i){
         d3.select(this).attr("opacity", 1);
@@ -1561,3 +1602,4 @@ let bill100 = `
 // 4. show years on xaxis every other year [done]
 // 5. hover covers content [done]
 // 6. animation interrupted halfway
+// 7. look into college financing and spending

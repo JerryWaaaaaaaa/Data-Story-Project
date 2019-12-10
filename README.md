@@ -1,9 +1,11 @@
 # Data Story
 
 The project is a story that emerges from and is told alongside a dataset.
-See the project [here](https://data-story-project.jerrywaaaaaaaa.now.sh/).
+Click to read the [story](https://data-story-project.jerrywaaaaaaaa.now.sh/).
 
-## Introduction
+## Context
+
+Since the very beginning of the emergence of college education, it has been believed that college education can either keep or raise people's social classes. A simple example is that, back then, people went for philosophy, history, and law. While nowadays, people turn their attention from liberal arts to computer science, computer engineering, and finance. In addition, with this belief, people have tried hard and paid a lot to get a college education. However, when I went job hunting months ago, I started to realize this huge financial gap between the spending on education and the return I get (salary). With this rising tuition and weak labor market, I started to doubt about this belief of college education. These doubts led me to more research on topics such as returns on education and labor market trends. Meanwhile, I collected some data and visualized them as a tool to review the claims made on college education. 
 
 ### The Dataset - Returns to Education
 Click [here](https://ourworldindata.org/returns-to-education) to see the detailed description.
@@ -22,8 +24,9 @@ Working hours can relate to many aspects of hour life, and it can also reflect m
 
 Even though there are already many correlations found under this topic, there are still some other aspects that I want to explore. Does the decrease of working hours bring more happiness to people? How is working hours related to [Human Development Index](https://ourworldindata.org/human-development-index)? Is it possible to show the working hours for only male or female, only skilled workers or unskilled workers?
 
-## Progress
-- [Subject Presentation]()
+
+## Presentation Materials
+- [Subject Presentation]
 - [Work In Progress Presentation](https://docs.google.com/presentation/d/1BBHRAaUVypzMHAJgxWnPxGbdQ2ACZH3EDMq94SzJ36c/edit?usp=sharing)
 
 ## Data Resources
